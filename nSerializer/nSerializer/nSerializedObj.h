@@ -31,7 +31,7 @@ public:
     ~nSerializedObj();
 
     char* getBytes();
-    int getSize();
+    long getSize();
     
     void writeInt32(int& input);
 };

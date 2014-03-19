@@ -24,31 +24,20 @@ nSerializedObj::~nSerializedObj()
 /*
 void nSerializedObj::resizeBufferNeeded(long& _size)
 {
-    std::cout << " before: " << sizeof(buffer) << " | ";
     char* tmp = (char*)malloc(sizeof(buffer));
     strcpy(tmp, buffer);
     free(buffer);
-    std::cout << " tmp: " << sizeof(tmp) << " | _size: " << _size;
     buffer = (char*) malloc(16);
     max += _size;
     free(tmp);
-    
-    std::cout << " after: " << sizeof(buffer) << " ";
 }*/
 
 void nSerializedObj::resizeBufferNeeded(long& _size)
 {
-    //if(_size > max)
-    //{
+    if(_size > max)
+    {
         buffer = (char*)realloc(buffer, _size);
-    
-        //max += _size;
-        std::cout << " \n realloc'd " << " _size " << _size;
-    //}
-    //else
-    //{
-        //max += _size;
-    //}
+    }
     max += _size;
 }
 
@@ -57,7 +46,7 @@ char* nSerializedObj::getBytes()
     return buffer;
 }
 
-int nSerializedObj::getSize()
+long nSerializedObj::getSize()
 {
     return max;
 }
