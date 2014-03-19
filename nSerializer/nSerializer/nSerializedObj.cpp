@@ -11,9 +11,9 @@
 //constructor
 nSerializedObj::nSerializedObj()
 {
-    buffer = (char*)malloc(8); //JUST an initial size.. todo for better memory management
+    buffer = (char*)malloc(10); //JUST an initial size.. todo for better memory management
     counter = 0;
-    max = 8; //just an initial size
+    max = 10; //just an initial size
 }
 
 nSerializedObj::~nSerializedObj()
@@ -34,11 +34,12 @@ void nSerializedObj::resizeBufferNeeded(long& _size)
 
 void nSerializedObj::resizeBufferNeeded(long& _size)
 {
-    if(_size > max)
+    int dif = abs(max - _size);
+    if( dif < _size )
     {
-        buffer = (char*)realloc(buffer, _size);
+        buffer = (char*)realloc(buffer, dif);
+        max += dif;
     }
-    max += _size;
 }
 
 char* nSerializedObj::getBytes()
@@ -73,8 +74,6 @@ void nSerializedObj::writeInt32(int& input)
         counter++;
     }
  
-    std::cout << " \n strlen(buffer) " << strlen(buffer);
-    
 }
 
 
