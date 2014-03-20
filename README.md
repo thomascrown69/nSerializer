@@ -9,10 +9,10 @@ There's a long road ahead.
 
 TODO 
 
-v0.1:
-Cover most Primitive Types - 50%
-Test Cases for the types - 0%
-Type validators (tests) for both 32 & 64 bit - 0%
-Benchmark tools - 0%
-Compare to other libs - 0%
-Separate the example and the lib - 0%
+v0.1: \n
+Cover most Primitive Types - 50% \n
+Test Cases for the types - 0% \n
+Type validators (tests) for both 32 & 64 bit - 0% \n
+Benchmark tools - 0% \n
+Compare to other libs - 0% \n
+Separate the example and the lib - 0% \n
