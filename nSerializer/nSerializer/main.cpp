@@ -9,13 +9,15 @@
 #include <iostream>
 #include <fstream>
 #include "nSerializedObj.h"
+#include "Benchmarker.h"
 
 int main(int argc, const char * argv[])
 {
 
     std::cout << "Hello, nSerializer World!\n";
     
-    nSerializedObj* obj = new nSerializedObj(32);
+    
+    Benchmarker* bench = new Benchmarker();
     
     char* test0 = "georgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgegeorgeogeorgeLLL";
     
@@ -32,6 +34,9 @@ int main(int argc, const char * argv[])
     
     unsigned long test8 =5147483647;
     
+    bench->start();
+    
+    nSerializedObj* obj = new nSerializedObj(32);
     obj->writeChars(test0);
     obj->writeInt32(test1);
     obj->writeInt32(test2);
@@ -41,6 +46,10 @@ int main(int argc, const char * argv[])
     obj->writeString(test6);
     obj->writeFloat(test7);
     obj->writeLong(test8);
+
+    bench->stop();
+    
+    std::cout << "\n time taken : " << bench->get() << " \n ";
     
     std::ofstream output_file("data.tx", std::ios::binary);
     output_file.write( obj->getBytes(), obj->getSize());

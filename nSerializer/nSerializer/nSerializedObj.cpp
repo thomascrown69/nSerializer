@@ -81,7 +81,6 @@ void nSerializedObj::writeInt32(uint32_t input)
 //32 bit ints.
 void nSerializedObj::writeLong(unsigned long input)
 {
-    std::cout << " ttotalbytes: " << Helpers::bytesOfLong(input);
     resizeBufferNeeded( (long)byteSize_writeInt64 );
     writeByte(Int64_Type);
     char n[8];
@@ -113,7 +112,6 @@ void nSerializedObj::writeFloat(float input)
     n1[1] = (decim & 0xFF00) >> 8;
     n1[2] = (decim & 0xFF0000) >> 16;
     n1[3] = (decim & 0xFF000000) >> 24;
-    //apply the length binary sequence
     int i = 0;
     while( i < 4 )
     {
@@ -126,7 +124,6 @@ void nSerializedObj::writeFloat(float input)
     n2[1] = (frac & 0xFF00) >> 8;
     n2[2] = (frac & 0xFF0000) >> 16;
     n2[3] = (frac & 0xFF000000) >> 24;
-    //apply the length binary sequence
     i = 0;
     while( i < 4 )
     {

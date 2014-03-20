@@ -10,6 +10,7 @@
 		BE550CB718DA1B5C008013A9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE550CB618DA1B5C008013A9 /* main.cpp */; };
 		BE550CB918DA1B5C008013A9 /* nSerializer.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = BE550CB818DA1B5C008013A9 /* nSerializer.1 */; };
 		BE550CC118DA1BE1008013A9 /* nSerializedObj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE550CBF18DA1BE1008013A9 /* nSerializedObj.cpp */; };
+		BEE0626A18DB3286009681F7 /* Benchmarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BEE0626818DB3286009681F7 /* Benchmarker.cpp */; };
 		BEEE858B18DA7CAB00F095F6 /* Helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BEEE858918DA7CAB00F095F6 /* Helpers.cpp */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +33,8 @@
 		BE550CB818DA1B5C008013A9 /* nSerializer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = nSerializer.1; sourceTree = "<group>"; };
 		BE550CBF18DA1BE1008013A9 /* nSerializedObj.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nSerializedObj.cpp; sourceTree = "<group>"; };
 		BE550CC018DA1BE1008013A9 /* nSerializedObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nSerializedObj.h; sourceTree = "<group>"; };
+		BEE0626818DB3286009681F7 /* Benchmarker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Benchmarker.cpp; sourceTree = "<group>"; };
+		BEE0626918DB3286009681F7 /* Benchmarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Benchmarker.h; sourceTree = "<group>"; };
 		BEEE858918DA7CAB00F095F6 /* Helpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Helpers.cpp; sourceTree = "<group>"; };
 		BEEE858A18DA7CAB00F095F6 /* Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helpers.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,6 +75,8 @@
 				BE550CC018DA1BE1008013A9 /* nSerializedObj.h */,
 				BEEE858918DA7CAB00F095F6 /* Helpers.cpp */,
 				BEEE858A18DA7CAB00F095F6 /* Helpers.h */,
+				BEE0626818DB3286009681F7 /* Benchmarker.cpp */,
+				BEE0626918DB3286009681F7 /* Benchmarker.h */,
 			);
 			path = nSerializer;
 			sourceTree = "<group>";
@@ -129,6 +134,7 @@
 			files = (
 				BEEE858B18DA7CAB00F095F6 /* Helpers.cpp in Sources */,
 				BE550CC118DA1BE1008013A9 /* nSerializedObj.cpp in Sources */,
+				BEE0626A18DB3286009681F7 /* Benchmarker.cpp in Sources */,
 				BE550CB718DA1B5C008013A9 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
