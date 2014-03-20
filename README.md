@@ -7,12 +7,12 @@ This small hobby project is also part of my practice to write fast and efficient
 There's a long road ahead. 
 
 
-TODO 
+TODO <br /><br />
 
-v0.1: \n
-Cover most Primitive Types - 50% \n
-Test Cases for the types - 0% \n
-Type validators (tests) for both 32 & 64 bit - 0% \n
-Benchmark tools - 0% \n
-Compare to other libs - 0% \n
-Separate the example and the lib - 0% \n
+v0.1: <br />
+Cover most Primitive Types - 50% <br />
+Test Cases for the types - 0% <br />
+Type validators (tests) for both 32 & 64 bit - 0% <br />
+Benchmark tools - 0% <br />
+Compare to other libs - 0% <br />
+Separate the example and the lib - 0% <br />
