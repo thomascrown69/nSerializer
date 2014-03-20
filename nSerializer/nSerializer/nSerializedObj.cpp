@@ -106,7 +106,6 @@ void nSerializedObj::writeFloat(float input)
 {
     int decim = (int) input;
     int frac =  Helpers::frac_notrailingzeros(input, 4);
-    std::cout << " float: " << input << " DECIM: " << decim << " frac: " << frac << "\n";
     resizeBufferNeeded(byteSize_writeFloat);
     writeByte(Float_Type);
     char n1[4];
