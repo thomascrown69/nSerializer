@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		BE550CB718DA1B5C008013A9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE550CB618DA1B5C008013A9 /* main.cpp */; };
-		BE550CB918DA1B5C008013A9 /* nSerializer.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = BE550CB818DA1B5C008013A9 /* nSerializer.1 */; };
 		BE550CC118DA1BE1008013A9 /* nSerializedObj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE550CBF18DA1BE1008013A9 /* nSerializedObj.cpp */; };
 		BEE0626A18DB3286009681F7 /* Benchmarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BEE0626818DB3286009681F7 /* Benchmarker.cpp */; };
 		BEEE858B18DA7CAB00F095F6 /* Helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BEEE858918DA7CAB00F095F6 /* Helpers.cpp */; };
@@ -21,7 +20,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				BE550CB918DA1B5C008013A9 /* nSerializer.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -30,7 +28,6 @@
 /* Begin PBXFileReference section */
 		BE550CB318DA1B5C008013A9 /* nSerializer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = nSerializer; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE550CB618DA1B5C008013A9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		BE550CB818DA1B5C008013A9 /* nSerializer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = nSerializer.1; sourceTree = "<group>"; };
 		BE550CBF18DA1BE1008013A9 /* nSerializedObj.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nSerializedObj.cpp; sourceTree = "<group>"; };
 		BE550CC018DA1BE1008013A9 /* nSerializedObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nSerializedObj.h; sourceTree = "<group>"; };
 		BEE0626818DB3286009681F7 /* Benchmarker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Benchmarker.cpp; sourceTree = "<group>"; };
@@ -70,7 +67,6 @@
 			isa = PBXGroup;
 			children = (
 				BE550CB618DA1B5C008013A9 /* main.cpp */,
-				BE550CB818DA1B5C008013A9 /* nSerializer.1 */,
 				BE550CBF18DA1BE1008013A9 /* nSerializedObj.cpp */,
 				BE550CC018DA1BE1008013A9 /* nSerializedObj.h */,
 				BEEE858918DA7CAB00F095F6 /* Helpers.cpp */,
