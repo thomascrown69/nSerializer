@@ -19,6 +19,11 @@ class Helpers
     
     public:
         static long bytesOfLong(long input);
+        static double round(double r);
+        static double floor_to_zero(double f);
+        static double sign(double s);
+        static int frac(double f, int prec);
+        static int frac_notrailingzeros(double value, int precision);
     
 };
 

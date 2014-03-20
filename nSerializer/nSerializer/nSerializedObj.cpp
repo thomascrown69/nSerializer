@@ -9,12 +9,14 @@
 #include "nSerializedObj.h"
 #include "Helpers.h"
 
+#include <math.h>
+
 //constructor
-nSerializedObj::nSerializedObj()
+nSerializedObj::nSerializedObj(int defaultBufferSize)
 {
-    buffer = (char*)malloc(10); //JUST an initial size.. todo for better memory management
+    buffer = (char*)malloc(defaultBufferSize); //JUST an initial size.. todo for better memory management
     counter = 0;
-    max = 10; //just an initial size
+    max = defaultBufferSize; //just an initial size
     current = 0;
 }
 
@@ -23,24 +25,20 @@ nSerializedObj::~nSerializedObj()
     free(buffer);
 }
 
-/*
-void nSerializedObj::resizeBufferNeeded(long& _size)
-{
-    char* tmp = (char*)malloc(sizeof(buffer));
-    strcpy(tmp, buffer);
-    free(buffer);
-    buffer = (char*) malloc(16);
-    max += _size;
-    free(tmp);
-}*/
-
 void nSerializedObj::resizeBufferNeeded(long _size)
 {
-    long dif = labs(max - counter);
-    if( dif < _size )
+    long dif2 = labs(current + _size);
+    long dif1 = labs(max - dif2);
+    if( dif2 > max )
     {
-        buffer = (char*)realloc(buffer, labs(dif-_size));
-        max += _size;
+        char* tmp = (char*) malloc ( current );
+        memcpy(tmp, buffer, max);
+        free(buffer);
+        max = max + dif1;
+        buffer = (char*) malloc(max);
+        memcpy(buffer, tmp, max);
+        free(tmp);
+        
     }
     current = current + _size;
 }
@@ -103,21 +101,53 @@ void nSerializedObj::writeLong(unsigned long input)
     }
 }
 
+//this float implementation can only be 4 bytes . 4 bytes long
+void nSerializedObj::writeFloat(float input)
+{
+    int decim = (int) input;
+    int frac =  Helpers::frac_notrailingzeros(input, 4);
+    std::cout << " float: " << input << " DECIM: " << decim << " frac: " << frac << "\n";
+    resizeBufferNeeded(byteSize_writeFloat);
+    writeByte(Float_Type);
+    char n1[4];
+    n1[0] = (decim & 0xFF);
+    n1[1] = (decim & 0xFF00) >> 8;
+    n1[2] = (decim & 0xFF0000) >> 16;
+    n1[3] = (decim & 0xFF000000) >> 24;
+    //apply the length binary sequence
+    int i = 0;
+    while( i < 4 )
+    {
+        writeByte(n1[i]);
+        i++;
+    }
 
+    char n2[4];
+    n2[0] = (frac & 0xFF);
+    n2[1] = (frac & 0xFF00) >> 8;
+    n2[2] = (frac & 0xFF0000) >> 16;
+    n2[3] = (frac & 0xFF000000) >> 24;
+    //apply the length binary sequence
+    i = 0;
+    while( i < 4 )
+    {
+        writeByte(n2[i]);
+        i++;
+    }
+    
+}
+
+//only supports char arrays of length value of 4 bytes
 void nSerializedObj::writeChars(char* input)
 {
     int size = strlen(input);
- 
     resizeBufferNeeded(byteSize_writeChars + size);
-    
     writeByte(Chars_Type);
-    
     char n[4];
     n[0] = (size & 0xFF);
     n[1] = (size & 0xFF00) >> 8;
     n[2] = (size & 0xFF0000) >> 16;
     n[3] = (size & 0xFF000000) >> 24;
-    
     //apply the length binary sequence
     int i = 0;
     while( i < 4 )
@@ -125,7 +155,6 @@ void nSerializedObj::writeChars(char* input)
         writeByte(n[i]);
         i++;
     }
-    
     //apply the string binary sequence
     int y = 0;
     while( y < size )
@@ -133,9 +162,35 @@ void nSerializedObj::writeChars(char* input)
         writeByte(input[y]);
         y++;
     }
-    
     if(!input)
     {
         free(input);
+    }
+}
+
+//only supports char arrays of length value of 4 bytes
+void nSerializedObj::writeString(std::string input)
+{
+    int size = input.length();
+    resizeBufferNeeded(byteSize_writeString + size);
+    writeByte(String_Type);
+    char n[4];
+    n[0] = (size & 0xFF);
+    n[1] = (size & 0xFF00) >> 8;
+    n[2] = (size & 0xFF0000) >> 16;
+    n[3] = (size & 0xFF000000) >> 24;
+    //apply the length binary sequence
+    int i = 0;
+    while( i < 4 )
+    {
+        writeByte(n[i]);
+        i++;
+    }
+    //apply the string binary sequence
+    int y = 0;
+    while( y < size )
+    {
+        writeByte(input[y]);
+        y++;
     }
 }
