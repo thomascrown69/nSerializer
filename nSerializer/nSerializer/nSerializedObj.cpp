@@ -7,9 +7,6 @@
 //
 
 #include "nSerializedObj.h"
-#include "Helpers.h"
-
-#include <math.h>
 
 //constructor
 nSerializedObj::nSerializedObj(int defaultBufferSize)

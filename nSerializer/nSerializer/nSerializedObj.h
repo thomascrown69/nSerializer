@@ -10,6 +10,8 @@
 #define __nSerializer__nSerializedObj__
 
 #include <iostream>
+#include "Helpers.h"
+#include <math.h>
 
 #define byteSize_writeInt32 5
 #define byteSize_writeInt64 9
