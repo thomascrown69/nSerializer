@@ -11,9 +11,10 @@
 
 #include <iostream>
 
-#endif /* defined(__nSerializer__nSerializedObj__) */
+#define byteSize_writeInt32 5
+#define byteSize_writeInt64 9
 
-
+#endif
 
 
 class nSerializedObj
@@ -23,8 +24,8 @@ private:
     long counter;
     long max;
     char* buffer;
-
-    void resizeBufferNeeded(long& _size);
+    
+    void resizeBufferNeeded(long _size);
     
 public:
     nSerializedObj();
@@ -33,5 +34,9 @@ public:
     char* getBytes();
     long getSize();
     
-    void writeInt32(int& input);
+    void writeInt32(int input);
+    void writeInt64(int input);
+    void writeChars(char* input);
+    void writeDouble(double input);
+    
 };

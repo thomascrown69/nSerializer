@@ -14,6 +14,7 @@ nSerializedObj::nSerializedObj()
     buffer = (char*)malloc(10); //JUST an initial size.. todo for better memory management
     counter = 0;
     max = 10; //just an initial size
+    
 }
 
 nSerializedObj::~nSerializedObj()
@@ -32,9 +33,9 @@ void nSerializedObj::resizeBufferNeeded(long& _size)
     free(tmp);
 }*/
 
-void nSerializedObj::resizeBufferNeeded(long& _size)
+void nSerializedObj::resizeBufferNeeded(long _size)
 {
-    int dif = abs(max - _size);
+    long dif = labs(max - _size);
     if( dif < _size )
     {
         buffer = (char*)realloc(buffer, dif);
@@ -52,20 +53,16 @@ long nSerializedObj::getSize()
     return max;
 }
 
-void nSerializedObj::writeInt32(int& input)
+void nSerializedObj::writeInt32(int input)
 {
-    long bytesSize = 5;
-    resizeBufferNeeded(bytesSize);
-    
+    resizeBufferNeeded( (long)byteSize_writeInt32 );
     buffer[counter] = 0x01; // type byte
     counter++;
-    
     char n[4];
     n[0] = (input & 0xFF);
     n[1] = (input & 0xFF00) >> 8;
     n[2] = (input & 0xFF0000) >> 16;
     n[3] = (input & 0xFF000000) >> 24;
-    
     int i = 0;
     while( i < 4 )
     {
@@ -73,7 +70,29 @@ void nSerializedObj::writeInt32(int& input)
         i++;
         counter++;
     }
- 
+}
+
+void nSerializedObj::writeInt64(int input)
+{
+    resizeBufferNeeded( (long)byteSize_writeInt32 );
+    buffer[counter] = 0x02; // type byte
+    counter++;
+    char n[7];
+    n[0] = (input & 0xFF);
+    n[1] = (input & 0xFF00) >> 8;
+    n[2] = (input & 0xFF0000) >> 16;
+    n[3] = (input & 0xFF000000) >> 24;
+    n[4] = (input & 0xFF0000000) >> 32;
+    n[5] = (input & 0xFF00000000) >> 40;
+    n[6] = (input & 0xFF000000000) >> 48;
+    n[7] = (input & 0xFF0000000000) >> 56;
+    int i = 0;
+    while( i < 7 )
+    {
+        buffer[counter] = n[i] ;
+        i++;
+        counter++;
+    }
 }
 
 

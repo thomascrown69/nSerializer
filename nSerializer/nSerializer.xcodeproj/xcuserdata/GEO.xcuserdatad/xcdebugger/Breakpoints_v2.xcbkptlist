@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "nSerializer/nSerializedObj.cpp"
-            timestampString = "416964138.716356"
+            timestampString = "416966031.516981"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57">
+            startingLineNumber = "56"
+            endingLineNumber = "56">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -24,12 +24,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "nSerializer/nSerializedObj.cpp"
-            timestampString = "416964138.716356"
+            timestampString = "416966031.516981"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "nSerializedObj::writeInt32(int&amp; input)"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "nSerializedObj::writeInt32(int input)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -40,11 +40,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "nSerializer/nSerializedObj.cpp"
-            timestampString = "416964138.716356"
+            timestampString = "416966223.850064"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82">
+            startingLineNumber = "99"
+            endingLineNumber = "99">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
