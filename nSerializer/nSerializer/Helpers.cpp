@@ -40,6 +40,8 @@ int Helpers::frac_notrailingzeros(double value, int precision)
 {
     int v = frac(value, precision);
     while (v % 10 == 0)
+    {
         v /= 10;
+    }
     return v;
 }
