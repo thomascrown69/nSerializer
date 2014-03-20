@@ -18,11 +18,12 @@ int main(int argc, const char * argv[])
     int test1 = 3232;
     int test2 = 2147483647;
     int test3 = -214748364;
-    
+    unsigned long test4 = 6745570283423232323;
     
     obj->writeInt32(test1);
     obj->writeInt32(test2);
     obj->writeInt32(test3);
+    obj->writeLong(test4);
     
     
     std::ofstream output_file("data.tx", std::ios::binary);

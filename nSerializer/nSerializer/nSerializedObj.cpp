@@ -7,6 +7,7 @@
 //
 
 #include "nSerializedObj.h"
+#include "Helpers.h"
 
 //constructor
 nSerializedObj::nSerializedObj()
@@ -38,11 +39,16 @@ void nSerializedObj::resizeBufferNeeded(long _size)
     long dif = labs(max - counter);
     if( dif < _size )
     {
-        buffer = (char*)realloc(buffer, _size);
+        buffer = (char*)realloc(buffer, labs(dif-_size));
         max += _size;
-        std::cout << "\n now \n";
     }
     current = current + _size;
+}
+
+void nSerializedObj::writeByte(int b)
+{
+    buffer[counter] = b;
+    counter++;
 }
 
 char* nSerializedObj::getBytes()
@@ -55,11 +61,10 @@ long nSerializedObj::getSize()
     return max;
 }
 
-void nSerializedObj::writeInt32(int input)
+void nSerializedObj::writeInt32(uint32_t input)
 {
     resizeBufferNeeded( (long)byteSize_writeInt32 );
-    buffer[counter] = 0x01; // type byte
-    counter++;
+    writeByte(Int32_Type);
     char n[4];
     n[0] = (input & 0xFF);
     n[1] = (input & 0xFF00) >> 8;
@@ -68,17 +73,19 @@ void nSerializedObj::writeInt32(int input)
     int i = 0;
     while( i < 4 )
     {
-        buffer[counter] = n[i] ;
+        writeByte(n[i]);
         i++;
-        counter++;
     }
 }
 
-void nSerializedObj::writeInt64(int input)
+
+//longs can by any byte size, my implementation stacks
+//32 bit ints.
+void nSerializedObj::writeLong(unsigned long input)
 {
-    resizeBufferNeeded( (long)byteSize_writeInt32 );
-    buffer[counter] = 0x02; // type byte
-    counter++;
+    std::cout << " ttotalbytes: " << Helpers::bytesOfLong(input);
+    resizeBufferNeeded( (long)byteSize_writeInt64 );
+    writeByte(Int64_Type);
     char n[8];
     n[0] = (input & 0xFF);
     n[1] = (input & 0xFF00) >> 8;
@@ -91,16 +98,19 @@ void nSerializedObj::writeInt64(int input)
     int i = 0;
     while( i < 7 )
     {
-        buffer[counter] = n[i] ;
+        writeByte(n[i]);
         i++;
-        counter++;
     }
 }
 
 
-/*writeCharAsString(char* _input)
+void nSerializedObj::writeChars(char* input)
 {
-    int size = strlen(_input);
+    int size = strlen(input);
+ 
+    resizeBufferNeeded(byteSize_writeChars + size);
+    
+    writeByte(Chars_Type);
     
     char n[4];
     n[0] = (size & 0xFF);
@@ -112,23 +122,20 @@ void nSerializedObj::writeInt64(int input)
     int i = 0;
     while( i < 4 )
     {
-        buf[counter] = n[i] ;
+        writeByte(n[i]);
         i++;
-        counter++;
     }
     
     //apply the string binary sequence
     int y = 0;
     while( y < size )
     {
-        buf[counter] = _input[y];
+        writeByte(input[y]);
         y++;
-        counter++;
     }
     
-    
-    if(!_input)
+    if(!input)
     {
-        free(_input);
+        free(input);
     }
-}*/
+}

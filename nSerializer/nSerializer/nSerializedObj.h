@@ -13,6 +13,18 @@
 
 #define byteSize_writeInt32 5
 #define byteSize_writeInt64 9
+#define byteSize_writeChars 5
+
+
+#define Int32_Type 0x01
+#define Int64_Type 0x02
+
+#define Double_Type 0x05
+#define Float_Type 0x06
+#define FloatFrac_Type 0x07
+#define Chars_Type 0x08
+
+
 
 #endif
 
@@ -20,26 +32,27 @@
 class nSerializedObj
 {
 
-private:
-    long counter;
-    long max;
-    long current;
-    char* buffer;
-    
-    void resizeBufferNeeded(long _size);
-    
-public:
-    nSerializedObj();
-    ~nSerializedObj();
+    private:
+        long counter;
+        long max;
+        long current;
+        char* buffer;
 
-    char* getBytes();
-    long getSize();
+        void writeByte(int b);
+        void resizeBufferNeeded(long _size);
     
-    void writeInt32(int input);
-    void writeInt64(int input);
-    void writeChars(char* input);
-    void writeDouble(double input);
-    void writeFloat(float input);
+    public:
+        nSerializedObj();
+        ~nSerializedObj();
+
+        char* getBytes();
+        long getSize();
+
+        void writeInt32(uint32_t input);
+        void writeLong(unsigned long input);
+        void writeChars(char* input);
+        void writeDouble(double input);
+        void writeFloat(float input);
     
     
 };

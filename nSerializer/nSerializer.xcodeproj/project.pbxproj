@@ -10,6 +10,7 @@
 		BE550CB718DA1B5C008013A9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE550CB618DA1B5C008013A9 /* main.cpp */; };
 		BE550CB918DA1B5C008013A9 /* nSerializer.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = BE550CB818DA1B5C008013A9 /* nSerializer.1 */; };
 		BE550CC118DA1BE1008013A9 /* nSerializedObj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE550CBF18DA1BE1008013A9 /* nSerializedObj.cpp */; };
+		BEEE858B18DA7CAB00F095F6 /* Helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BEEE858918DA7CAB00F095F6 /* Helpers.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,8 @@
 		BE550CB818DA1B5C008013A9 /* nSerializer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = nSerializer.1; sourceTree = "<group>"; };
 		BE550CBF18DA1BE1008013A9 /* nSerializedObj.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nSerializedObj.cpp; sourceTree = "<group>"; };
 		BE550CC018DA1BE1008013A9 /* nSerializedObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nSerializedObj.h; sourceTree = "<group>"; };
+		BEEE858918DA7CAB00F095F6 /* Helpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Helpers.cpp; sourceTree = "<group>"; };
+		BEEE858A18DA7CAB00F095F6 /* Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helpers.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +70,8 @@
 				BE550CB818DA1B5C008013A9 /* nSerializer.1 */,
 				BE550CBF18DA1BE1008013A9 /* nSerializedObj.cpp */,
 				BE550CC018DA1BE1008013A9 /* nSerializedObj.h */,
+				BEEE858918DA7CAB00F095F6 /* Helpers.cpp */,
+				BEEE858A18DA7CAB00F095F6 /* Helpers.h */,
 			);
 			path = nSerializer;
 			sourceTree = "<group>";
@@ -122,6 +127,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEEE858B18DA7CAB00F095F6 /* Helpers.cpp in Sources */,
 				BE550CC118DA1BE1008013A9 /* nSerializedObj.cpp in Sources */,
 				BE550CB718DA1B5C008013A9 /* main.cpp in Sources */,
 			);
@@ -134,6 +140,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -172,6 +179,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -233,6 +241,7 @@
 				BE550CBE18DA1B5C008013A9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
