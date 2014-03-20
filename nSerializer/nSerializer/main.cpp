@@ -22,7 +22,7 @@ int main(int argc, const char * argv[])
     
     obj->writeInt32(test1);
     obj->writeInt32(test2);
-    //obj->writeInt32(test3);
+    obj->writeInt32(test3);
     
     
     std::ofstream output_file("data.tx", std::ios::binary);

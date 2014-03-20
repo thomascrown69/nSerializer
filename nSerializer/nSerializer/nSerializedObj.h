@@ -23,6 +23,7 @@ class nSerializedObj
 private:
     long counter;
     long max;
+    long current;
     char* buffer;
     
     void resizeBufferNeeded(long _size);
@@ -38,5 +39,7 @@ public:
     void writeInt64(int input);
     void writeChars(char* input);
     void writeDouble(double input);
+    void writeFloat(float input);
+    
     
 };
