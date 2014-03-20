@@ -107,3 +107,7 @@ xcuserdata
  
 *.xccheckout
  
+
+*.pbxproj
+
+*.xcbkptlist
