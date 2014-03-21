@@ -8,12 +8,22 @@
 
 #include "nSerializedObj.h"
 
-//constructor
-nSerializedObj::nSerializedObj(int defaultBufferSize)
+
+nSerializedObj::nSerializedObj(long bufferSize, char* bytearray)
 {
-    buffer = (char*)malloc(defaultBufferSize); //JUST an initial size.. todo for better memory management
+    buffer = (char*)malloc(bufferSize);
     counter = 0;
-    max = defaultBufferSize; //just an initial size
+    max = bufferSize;
+    current = bufferSize;
+    
+    memcpy(buffer, bytearray, bufferSize);
+}
+
+nSerializedObj::nSerializedObj(long defaultBufferSize)
+{
+    buffer = (char*)malloc(defaultBufferSize);
+    counter = 0;
+    max = defaultBufferSize;
     current = 0;
 }
 
@@ -46,6 +56,21 @@ void nSerializedObj::writeByte(int b)
     counter++;
 }
 
+char nSerializedObj::readByte()
+{
+    char r = buffer[counter];
+    counter++;
+    std::cout << " \n b: " << counter << " |= " << r;
+    return r;
+}
+
+char nSerializedObj::readByteAt(int _counter)
+{
+    char r = buffer[_counter];
+    counter = _counter + 1;
+    return r;
+}
+
 char* nSerializedObj::getBytes()
 {
     return buffer;
@@ -74,6 +99,43 @@ void nSerializedObj::writeInt32(uint32_t input)
 }
 
 
+int nSerializedObj::readInt32()
+{
+    counter++;
+    unsigned int x = (readByte() & 0xFF) |
+    (readByte() & 0xFF) << 8 |
+    (readByte() & 0xFF) << 16 |
+    (readByte() & 0xFF) << 24;
+    return x;
+}
+
+unsigned long nSerializedObj::readLong()
+{
+    counter++;
+    char n[8];
+    n[0] = readByte();
+    n[1] = readByte();
+    n[2] = readByte();
+    n[3] = readByte();
+    n[4] = readByte();
+    n[5] = readByte();
+    n[6] = readByte();
+    n[7] = readByte();
+    
+    unsigned long x = ( ((n[7] & 0xff) << 56) | ((n[6] & 0xff) << 48) | ((n[5] & 0xff) << 40) | ((n[4] & 0xff) << 32) | ((n[3] & 0xff) << 24) | ((n[2] & 0xff) << 16) | ((n[1] & 0xff) << 8) | ((n[0] & 0xff)) );
+    
+    return x;
+
+}
+
+char* nSerializedObj::readChars()
+{
+    int length = readInt32();
+    char* r = (char*) malloc(length);
+    std::cout << " \n length: " << length;
+    return r;
+}
+
 //longs can by any byte size, my implementation stacks
 //32 bit ints.
 void nSerializedObj::writeLong(unsigned long input)
@@ -90,12 +152,48 @@ void nSerializedObj::writeLong(unsigned long input)
     n[6] = (input & 0xFF000000000) >> 48;
     n[7] = (input & 0xFF0000000000) >> 56;
     int i = 0;
-    while( i < 7 )
+    while( i < 8 )
     {
         writeByte(n[i]);
         i++;
     }
 }
+
+
+//
+void nSerializedObj::writeDouble(double input)
+{
+    int decim = (int) input;
+    int frac =  Helpers::frac_notrailingzeros(input, 8);
+    resizeBufferNeeded(byteSize_writeFloat);
+    writeByte(Double_Type);
+    char n1[4];
+    n1[0] = (decim & 0xFF);
+    n1[1] = (decim & 0xFF00) >> 8;
+    n1[2] = (decim & 0xFF0000) >> 16;
+    n1[3] = (decim & 0xFF000000) >> 24;
+    int i = 0;
+    while( i < 4 )
+    {
+        writeByte(n1[i]);
+        i++;
+    }
+    
+    char n2[4];
+    n2[0] = (frac & 0xFF);
+    n2[1] = (frac & 0xFF00) >> 8;
+    n2[2] = (frac & 0xFF0000) >> 16;
+    n2[3] = (frac & 0xFF000000) >> 24;
+    i = 0;
+    while( i < 4 )
+    {
+        writeByte(n2[i]);
+        i++;
+    }
+    
+}
+
+
 
 //this float implementation can only be 4 bytes . 4 bytes long
 void nSerializedObj::writeFloat(float input)

@@ -31,5 +31,5 @@ class Benchmarker
         void start();
         void stop();
         double get();
-    
+        double getMS();
 };

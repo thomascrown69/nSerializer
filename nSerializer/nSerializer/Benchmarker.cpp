@@ -34,3 +34,8 @@ double Benchmarker::get()
 {
     return delta;
 }
+
+double Benchmarker::getMS()
+{
+    return delta * 1000;
+}

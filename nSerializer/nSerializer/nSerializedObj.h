@@ -42,12 +42,18 @@ class nSerializedObj
         char* buffer;
 
         void writeByte(int b);
+        char readByte();
+        char readByteAt(int _counter);
+    
         void resizeBufferNeeded(long _size);
     
     public:
-        nSerializedObj(int defaultBufferSize);
+        nSerializedObj(long defaultBufferSize);
+        nSerializedObj(long defaultBufferSize, char* bytearray);
         ~nSerializedObj();
 
+        static nSerializedObj createSerializedObjFrom(char* bytearray);
+    
         char* getBytes();
         long getSize();
 
@@ -58,4 +64,10 @@ class nSerializedObj
         void writeFloat(float input);
         void writeString(std::string input);
     
+        int readInt32();
+        unsigned long readLong();
+        char* readChars();
+        double readDouble();
+        float readFloat();
+        std::string readString();
 };
