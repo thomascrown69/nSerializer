@@ -2,8 +2,8 @@ nSerializer
 ===========
 
 What is this!?
-Just a small lightweight serialising library mostly for networking. 
-This small hobby project is also part of my practice to write fast and efficient code!
+Just a small lightweight serialising library mostly for networking in mind, crossplatform ( Win, Linux, Mac, Android, iOS). 
+This small hobby project is also part of my practice to become a better programmer!
 There's a long road ahead. 
 
 
