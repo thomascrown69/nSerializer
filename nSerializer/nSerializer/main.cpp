@@ -32,24 +32,24 @@ int main(int argc, const char * argv[])
     
     float test7 = 21333.93339;
     
-    long test8 = 2455702834;
+    long test8 = 2155702834;
     
     bench->start();
     
     nSerializedObj* obj = new nSerializedObj(32);
-    //obj->writeChars(test0);
+    obj->writeChars(test0);
     obj->writeInt32(test1);
     obj->writeInt32(test2);
     obj->writeInt32(test3);
     obj->writeLong(test4);
     obj->writeChars(test5);
-    //obj->writeString(test6);
+    obj->writeString(test6);
     //obj->writeFloat(test7);
     obj->writeLong(test8);
 
     bench->stop();
     
-    std::cout << "\n time taken : " << bench->getMS() << "ms \n ";
+    std::cout << "\n WRITE time taken : " << bench->getMS() << "ms \n ";
     
     std::ofstream output_file("data.tx", std::ios::binary);
     output_file.write( obj->getBytes(), obj->getSize());
@@ -57,7 +57,15 @@ int main(int argc, const char * argv[])
     
     obj->~nSerializedObj();
 
-
+    if(!test0)
+    {
+        free(test0);
+    }
+    if(!test5)
+    {
+        free(test5);
+    }
+    
     std::ifstream input_file("data.tx", std::ios::binary);
     
     input_file.seekg (0, input_file.end);
@@ -70,18 +78,31 @@ int main(int argc, const char * argv[])
     
     nSerializedObj* obj2 = new nSerializedObj(length, pInputFile);
     
-    int a = obj2->readInt32();
+    bench->start();
+
+    char* a= obj2->readChars();
     int b = obj2->readInt32();
     int c = obj2->readInt32();
-    unsigned long d = obj2->readLong();
-    char* e = obj2->readChars();
+    int d = obj2->readInt32();
+    unsigned long e = obj2->readLong();
+    char* f = obj2->readChars();
+    std::string g = obj2->readString();
+    unsigned long h = obj2->readLong();
     
-    std::cout << "\n\n result: " << a << " | " << b << " | " << c << " | " << d << " | " << e << " \n ";
+    bench->stop();
+    
+    std::cout << "\n\n READ result: " << a << " | " << b << " | " << c << " | " << d << " | " << e << " | " << f << " | " << g << " | " << h << " \n ";
+    
+    
+    std::cout << "\n READ time taken : " << bench->getMS() << "ms \n ";
     
     free(pInputFile);
     input_file.close();
     
     obj2->~nSerializedObj();
+    
+    free(a);
+    free(f);
     
     return 0;
 }

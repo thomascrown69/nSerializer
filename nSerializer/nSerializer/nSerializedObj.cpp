@@ -60,9 +60,9 @@ char nSerializedObj::readByte()
 {
     char r = buffer[counter];
     counter++;
-    std::cout << " \n b: " << counter << " |= " << r;
     return r;
 }
+
 
 char nSerializedObj::readByteAt(int _counter)
 {
@@ -132,7 +132,26 @@ char* nSerializedObj::readChars()
 {
     int length = readInt32();
     char* r = (char*) malloc(length);
-    std::cout << " \n length: " << length;
+    int i = 0;
+    while(i != length)
+    {
+        r[i] = readByte();
+        i++;
+    }
+    return r;
+}
+
+std::string nSerializedObj::readString()
+{
+    int length = readInt32();
+    std::string r = "";
+    int i = 0;
+    while(i != length)
+    {
+        r.push_back(readByte());
+        i++;
+    }
+
     return r;
 }
 
