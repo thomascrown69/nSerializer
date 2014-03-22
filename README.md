@@ -15,7 +15,7 @@ Java version: 0% <br />
 <br />
 
 v0.1: <br />
-Cover most Primitive Types - 70% <br />
+Cover most Basic Primitive Types - 90% (only int and long implemented, no bigger than 8bytes data types yet) <br />
 Test Cases for the types - 0% <br />
 Type validators (tests) for both 32 & 64 bit - 0% <br />
 Benchmark tools - 100% <br />
