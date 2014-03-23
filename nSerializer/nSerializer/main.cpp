@@ -30,23 +30,26 @@ int main(int argc, const char * argv[])
     
     std::string test6 = "EstringtestetststringZ";
     
-    float test7 = 21333.93339;
+    float test7 = -21333.93339;
     
     long test8 = 2155702834;
+    
+    double test9 = 93339.93339;
     
     bench->start();
     
     nSerializedObj* obj = new nSerializedObj(32);
-    obj->writeChars(test0);
-    obj->writeInt32(test1);
-    obj->writeInt32(test2);
-    obj->writeInt32(test3);
-    obj->writeLong(test4);
-    obj->writeChars(test5);
-    obj->writeString(test6);
-    //obj->writeFloat(test7);
-    obj->writeLong(test8);
-
+    //obj->writeChars(test0);
+    //obj->writeInt32(test1);
+    //obj->writeInt32(test2);
+    //obj->writeInt32(test3);
+    //obj->writeLong(test4);
+    //obj->writeChars(test5);
+    //obj->writeString(test6);
+    obj->writeFloat(test7);
+    //obj->writeLong(test8);
+    obj->writeDouble(test9);
+    
     bench->stop();
     
     std::cout << "\n WRITE time taken : " << bench->getMS() << "ms \n ";
@@ -80,18 +83,27 @@ int main(int argc, const char * argv[])
     
     bench->start();
 
-    char* a= obj2->readChars();
-    int b = obj2->readInt32();
-    int c = obj2->readInt32();
-    int d = obj2->readInt32();
-    unsigned long e = obj2->readLong();
-    char* f = obj2->readChars();
-    std::string g = obj2->readString();
-    unsigned long h = obj2->readLong();
+    //char* a= obj2->readChars();
+    //int b = obj2->readInt32();
+    //int c = obj2->readInt32();
+    //int d = obj2->readInt32();
+    //unsigned long e = obj2->readLong();
+    //char* f = obj2->readChars();
+    //std::string g = obj2->readString();
+    //unsigned long h = obj2->readLong();
+    float i = obj2->readFloat();
+    float j = obj2->readDouble();
+    
+    //std::cout << " \n f: " << fl;
+    
+    printf( "\n i: %f", i );
+    
+    printf( "\n j: %f", j );
+    
     
     bench->stop();
     
-    std::cout << "\n\n READ result: " << a << " | " << b << " | " << c << " | " << d << " | " << e << " | " << f << " | " << g << " | " << h << " \n ";
+    //std::cout << "\n\n READ result: " << a << " | " << b << " | " << c << " | " << d << " | " << e << " | " << f << " | " << g << " | " << h << " \n ";
     
     
     std::cout << "\n READ time taken : " << bench->getMS() << "ms \n ";
@@ -101,8 +113,8 @@ int main(int argc, const char * argv[])
     
     obj2->~nSerializedObj();
     
-    free(a);
-    free(f);
+    //free(a);
+    //free(f);
     
     return 0;
 }

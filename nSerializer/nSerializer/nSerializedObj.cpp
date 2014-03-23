@@ -71,37 +71,21 @@ char nSerializedObj::readByteAt(int _counter)
     return r;
 }
 
+
 char* nSerializedObj::getBytes()
 {
     return buffer;
 }
+
 
 long nSerializedObj::getSize()
 {
     return max;
 }
 
-void nSerializedObj::writeInt32(uint32_t input)
-{
-    resizeBufferNeeded( (long)byteSize_writeInt32 );
-    writeByte(Int32_Type);
-    char n[4];
-    n[0] = (input & 0xFF);
-    n[1] = (input & 0xFF00) >> 8;
-    n[2] = (input & 0xFF0000) >> 16;
-    n[3] = (input & 0xFF000000) >> 24;
-    int i = 0;
-    while( i < 4 )
-    {
-        writeByte(n[i]);
-        i++;
-    }
-}
-
 
 int nSerializedObj::readInt32()
 {
-    counter++;
     unsigned int x = (readByte() & 0xFF) |
     (readByte() & 0xFF) << 8 |
     (readByte() & 0xFF) << 16 |
@@ -109,9 +93,9 @@ int nSerializedObj::readInt32()
     return x;
 }
 
-unsigned long nSerializedObj::readLong()
+
+unsigned long nSerializedObj::readInt64()
 {
-    counter++;
     char n[8];
     n[0] = readByte();
     n[1] = readByte();
@@ -121,12 +105,10 @@ unsigned long nSerializedObj::readLong()
     n[5] = readByte();
     n[6] = readByte();
     n[7] = readByte();
-    
     unsigned long x = ( ((n[7] & 0xff) << 56) | ((n[6] & 0xff) << 48) | ((n[5] & 0xff) << 40) | ((n[4] & 0xff) << 32) | ((n[3] & 0xff) << 24) | ((n[2] & 0xff) << 16) | ((n[1] & 0xff) << 8) | ((n[0] & 0xff)) );
-    
     return x;
-
 }
+
 
 char* nSerializedObj::readChars()
 {
@@ -141,6 +123,21 @@ char* nSerializedObj::readChars()
     return r;
 }
 
+
+float nSerializedObj::readFloat()
+{
+    unsigned char* a = (unsigned char* ) readInt32();
+    return *(float *) &a;
+}
+
+
+double nSerializedObj::readDouble()
+{
+    unsigned char* a = (unsigned char* ) readInt64();
+    return *(float *) &a;
+}
+
+
 std::string nSerializedObj::readString()
 {
     int length = readInt32();
@@ -151,16 +148,31 @@ std::string nSerializedObj::readString()
         r.push_back(readByte());
         i++;
     }
-
     return r;
 }
 
-//longs can by any byte size, my implementation stacks
-//32 bit ints.
-void nSerializedObj::writeLong(unsigned long input)
+
+void nSerializedObj::writeInt32(uint32_t input)
+{
+    resizeBufferNeeded( (long)byteSize_writeInt32 );
+    char n[4];
+    n[0] = (input & 0xFF);
+    n[1] = (input & 0xFF00) >> 8;
+    n[2] = (input & 0xFF0000) >> 16;
+    n[3] = (input & 0xFF000000) >> 24;
+    int i = 0;
+    while( i < 4 )
+    {
+        writeByte(n[i]);
+        i++;
+    }
+
+}
+
+//needs reviewing
+void nSerializedObj::writeInt64(unsigned long input)
 {
     resizeBufferNeeded( (long)byteSize_writeInt64 );
-    writeByte(Int64_Type);
     char n[8];
     n[0] = (input & 0xFF);
     n[1] = (input & 0xFF00) >> 8;
@@ -179,80 +191,43 @@ void nSerializedObj::writeLong(unsigned long input)
 }
 
 
-//
-void nSerializedObj::writeDouble(double input)
-{
-    int decim = (int) input;
-    int frac =  Helpers::frac_notrailingzeros(input, 8);
-    resizeBufferNeeded(byteSize_writeFloat);
-    writeByte(Double_Type);
-    char n1[4];
-    n1[0] = (decim & 0xFF);
-    n1[1] = (decim & 0xFF00) >> 8;
-    n1[2] = (decim & 0xFF0000) >> 16;
-    n1[3] = (decim & 0xFF000000) >> 24;
-    int i = 0;
-    while( i < 4 )
-    {
-        writeByte(n1[i]);
-        i++;
-    }
-    
-    char n2[4];
-    n2[0] = (frac & 0xFF);
-    n2[1] = (frac & 0xFF00) >> 8;
-    n2[2] = (frac & 0xFF0000) >> 16;
-    n2[3] = (frac & 0xFF000000) >> 24;
-    i = 0;
-    while( i < 4 )
-    {
-        writeByte(n2[i]);
-        i++;
-    }
-    
-}
-
-
-
-//this float implementation can only be 4 bytes . 4 bytes long
+//single precision floating-point | IEEE 754
 void nSerializedObj::writeFloat(float input)
 {
-    int decim = (int) input;
-    int frac =  Helpers::frac_notrailingzeros(input, 4);
     resizeBufferNeeded(byteSize_writeFloat);
-    writeByte(Float_Type);
-    char n1[4];
-    n1[0] = (decim & 0xFF);
-    n1[1] = (decim & 0xFF00) >> 8;
-    n1[2] = (decim & 0xFF0000) >> 16;
-    n1[3] = (decim & 0xFF000000) >> 24;
-    int i = 0;
-    while( i < 4 )
-    {
-        writeByte(n1[i]);
-        i++;
-    }
+    unsigned char * p = (unsigned char *) &input;
+    writeByte(p[0]);
+    writeByte(p[1]);
+    writeByte(p[2]);
+    writeByte(p[3]);
+}
 
-    char n2[4];
-    n2[0] = (frac & 0xFF);
-    n2[1] = (frac & 0xFF00) >> 8;
-    n2[2] = (frac & 0xFF0000) >> 16;
-    n2[3] = (frac & 0xFF000000) >> 24;
-    i = 0;
-    while( i < 4 )
-    {
-        writeByte(n2[i]);
-        i++;
-    }
+
+//double precision floating-point | IEEE 754
+void nSerializedObj::writeDouble(double input)
+{
+    resizeBufferNeeded(byteSize_writeDouble);
+    
+    unsigned char * p = (unsigned char *) &input;
+    writeByte(p[0]);
+    writeByte(p[1]);
+    writeByte(p[2]);
+    writeByte(p[3]);
+    writeByte(p[4]);
+    writeByte(p[5]);
+    writeByte(p[6]);
+    writeByte(p[7]);
+    
     
 }
+
 
 //only supports char arrays of length value of 4 bytes
 void nSerializedObj::writeChars(char* input)
 {
     int size = strlen(input);
     resizeBufferNeeded(byteSize_writeChars + size);
-    writeByte(Chars_Type);
+    //writeByte(Chars_Type);
     char n[4];
     n[0] = (size & 0xFF);
     n[1] = (size & 0xFF00) >> 8;
@@ -278,12 +253,12 @@ void nSerializedObj::writeChars(char* input)
     }
 }
 
+
 //only supports char arrays of length value of 4 bytes
 void nSerializedObj::writeString(std::string input)
 {
     int size = input.length();
     resizeBufferNeeded(byteSize_writeString + size);
-    writeByte(String_Type);
     char n[4];
     n[0] = (size & 0xFF);
     n[1] = (size & 0xFF00) >> 8;
