@@ -10,8 +10,7 @@
 #define __nSerializer__Benchmarker__
 
 #include <iostream>
-#include <sys/time.h>
-#include <sys/resource.h>
+#include <chrono>
 
 #endif 
 
@@ -19,17 +18,16 @@
 class Benchmarker
 {
     private:
-        double startValue;
-        double stopValue;
-        double delta;
-        struct timeval t;
-        struct timezone tzp;
+        std::chrono::high_resolution_clock::time_point startValue;
+        std::chrono::high_resolution_clock::time_point stopValue;
+    
     public:
         Benchmarker();
         ~Benchmarker();
     
         void start();
         void stop();
-        double get();
-        double getMS();
+        void getMS();
+        void getNS();
+        void getAll();
 };

@@ -10,30 +10,29 @@
 #define __nSerializer__nSerializedObj__
 
 #include <iostream>
-#include "Helpers.h"
 #include <math.h>
+
+#if defined( _WIN32 ) || defined( _WIN64 )
+
+#include <stdint.h>
+
+#else
+
+#endif
 
 #define byteSize_writeInt32 4
 #define byteSize_writeInt64 8
+#define byteSize_writeUInt64 8
 #define byteSize_writeChars 4
 #define byteSize_writeString 4
 #define byteSize_writeFloat 4
 #define byteSize_writeDouble 8
 
-//#define Int32_Type 0x01
-//#define Int64_Type 0x02
-
-//#define Double_Type 0x05
-//#define Float_Type 0x07
-
-//#define Chars_Type 0x09
-//#define String_Type 0x0A
-
 
 #endif
 
 
-class nSerializedObj
+class BaseSerializedObj
 {
 
     private:
@@ -49,24 +48,33 @@ class nSerializedObj
         void resizeBufferNeeded(long _size);
     
     public:
-        nSerializedObj(long defaultBufferSize);
-        nSerializedObj(long defaultBufferSize, char* bytearray);
-        ~nSerializedObj();
+        BaseSerializedObj(long defaultBufferSize);
+        BaseSerializedObj(long defaultBufferSize, char* bytearray);
+        ~BaseSerializedObj();
 
-        static nSerializedObj createSerializedObjFrom(char* bytearray);
+        //static nSerializedObj createSerializedObjFrom(char* bytearray);
     
         char* getBytes();
         long getSize();
 
-        void writeInt32(uint32_t input);
-        void writeInt64(unsigned long input);
+        void writeInt32(int32_t input);
+        void writeInt64(int64_t input);
+
+        void writeUInt32(uint32_t input);
+        void writeUInt64(uint64_t input);
+
+    
         void writeChars(char* input);
         void writeDouble(double input);
         void writeFloat(float input);
         void writeString(std::string input);
     
-        int readInt32();
-        unsigned long readInt64();
+        uint32_t readUInt32();
+        uint64_t readUInt64();
+    
+        int32_t readInt32();
+        int64_t readInt64();
+    
         char* readChars();
         double readDouble();
         float readFloat();

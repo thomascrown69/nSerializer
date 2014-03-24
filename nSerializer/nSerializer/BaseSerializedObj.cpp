@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 GEO. All rights reserved.
 //
 
-#include "nSerializedObj.h"
+#include "BaseSerializedObj.h"
 
 
-nSerializedObj::nSerializedObj(long bufferSize, char* bytearray)
+BaseSerializedObj::BaseSerializedObj(long bufferSize, char* bytearray)
 {
     buffer = (char*)malloc(bufferSize);
     counter = 0;
@@ -19,7 +19,7 @@ nSerializedObj::nSerializedObj(long bufferSize, char* bytearray)
     memcpy(buffer, bytearray, bufferSize);
 }
 
-nSerializedObj::nSerializedObj(long defaultBufferSize)
+BaseSerializedObj::BaseSerializedObj(long defaultBufferSize)
 {
     buffer = (char*)malloc(defaultBufferSize);
     counter = 0;
@@ -27,12 +27,12 @@ nSerializedObj::nSerializedObj(long defaultBufferSize)
     current = 0;
 }
 
-nSerializedObj::~nSerializedObj()
+BaseSerializedObj::~BaseSerializedObj()
 {
     free(buffer);
 }
 
-void nSerializedObj::resizeBufferNeeded(long _size)
+void BaseSerializedObj::resizeBufferNeeded(long _size)
 {
     long dif2 = labs(current + _size);
     long dif1 = labs(max - dif2);
@@ -50,13 +50,13 @@ void nSerializedObj::resizeBufferNeeded(long _size)
     current = current + _size;
 }
 
-void nSerializedObj::writeByte(int b)
+void BaseSerializedObj::writeByte(int b)
 {
     buffer[counter] = b;
     counter++;
 }
 
-char nSerializedObj::readByte()
+char BaseSerializedObj::readByte()
 {
     char r = buffer[counter];
     counter++;
@@ -64,7 +64,7 @@ char nSerializedObj::readByte()
 }
 
 
-char nSerializedObj::readByteAt(int _counter)
+char BaseSerializedObj::readByteAt(int _counter)
 {
     char r = buffer[_counter];
     counter = _counter + 1;
@@ -72,45 +72,69 @@ char nSerializedObj::readByteAt(int _counter)
 }
 
 
-char* nSerializedObj::getBytes()
+char* BaseSerializedObj::getBytes()
 {
     return buffer;
 }
 
 
-long nSerializedObj::getSize()
+long BaseSerializedObj::getSize()
 {
     return max;
 }
 
 
-int nSerializedObj::readInt32()
+uint32_t BaseSerializedObj::readUInt32()
 {
-    unsigned int x = (readByte() & 0xFF) |
+    uint32_t x =
+    (readByte() & 0xFF) |
     (readByte() & 0xFF) << 8 |
     (readByte() & 0xFF) << 16 |
     (readByte() & 0xFF) << 24;
     return x;
 }
 
-
-unsigned long nSerializedObj::readInt64()
+int32_t BaseSerializedObj::readInt32()
 {
-    char n[8];
-    n[0] = readByte();
-    n[1] = readByte();
-    n[2] = readByte();
-    n[3] = readByte();
-    n[4] = readByte();
-    n[5] = readByte();
-    n[6] = readByte();
-    n[7] = readByte();
-    unsigned long x = ( ((n[7] & 0xff) << 56) | ((n[6] & 0xff) << 48) | ((n[5] & 0xff) << 40) | ((n[4] & 0xff) << 32) | ((n[3] & 0xff) << 24) | ((n[2] & 0xff) << 16) | ((n[1] & 0xff) << 8) | ((n[0] & 0xff)) );
-    return x;
+    int32_t r =
+    (readByte() & 0xFF) |
+    (readByte() & 0xFF) << 8 |
+    (readByte() & 0xFF) << 16 |
+    (readByte() & 0xFF) << 24;
+    return r;
 }
 
+int64_t BaseSerializedObj::readInt64()
+{
+    int64_t r =
+    ((int64_t)readByte() & 0xFF) |
+    ((int64_t)readByte() & 0xFF) << 8 |
+    ((int64_t)readByte() & 0xFF) << 16 |
+    ((int64_t)readByte() & 0xFF) << 24 |
+    ((int64_t)readByte() & 0xFF) << 32 |
+    ((int64_t)readByte() & 0xFF) << 40 |
+    ((int64_t)readByte() & 0xFF) << 48 |
+    ((int64_t)readByte() & 0xFF) << 56;
+    return r;
+}
 
-char* nSerializedObj::readChars()
+uint64_t BaseSerializedObj::readUInt64()
+{
+    uint64_t r =
+    ((uint64_t)readByte() & 0xFF) |
+    ((uint64_t)readByte() & 0xFF) << 8 |
+    ((uint64_t)readByte() & 0xFF) << 16 |
+    ((uint64_t)readByte() & 0xFF) << 24 |
+    ((uint64_t)readByte() & 0xFF) << 32 |
+    ((uint64_t)readByte() & 0xFF) << 40 |
+    ((uint64_t)readByte() & 0xFF) << 48 |
+    ((uint64_t)readByte() & 0xFF) << 56;
+    
+    return r;
+    
+}
+
+char* BaseSerializedObj::readChars()
 {
     int length = readInt32();
     char* r = (char*) malloc(length);
@@ -124,21 +148,21 @@ char* nSerializedObj::readChars()
 }
 
 
-float nSerializedObj::readFloat()
+float BaseSerializedObj::readFloat()
 {
     unsigned char* a = (unsigned char* ) readInt32();
     return *(float *) &a;
 }
 
 
-double nSerializedObj::readDouble()
+double BaseSerializedObj::readDouble()
 {
-    unsigned char* a = (unsigned char* ) readInt64();
+    unsigned char* a = (unsigned char* ) readUInt64();
     return *(float *) &a;
 }
 
 
-std::string nSerializedObj::readString()
+std::string BaseSerializedObj::readString()
 {
     int length = readInt32();
     std::string r = "";
@@ -152,47 +176,60 @@ std::string nSerializedObj::readString()
 }
 
 
-void nSerializedObj::writeInt32(uint32_t input)
+void BaseSerializedObj::writeUInt32(uint32_t input)
 {
-    resizeBufferNeeded( (long)byteSize_writeInt32 );
-    char n[4];
-    n[0] = (input & 0xFF);
-    n[1] = (input & 0xFF00) >> 8;
-    n[2] = (input & 0xFF0000) >> 16;
-    n[3] = (input & 0xFF000000) >> 24;
-    int i = 0;
-    while( i < 4 )
-    {
-        writeByte(n[i]);
-        i++;
-    }
-
+    resizeBufferNeeded( byteSize_writeInt32 );
+    unsigned char * p = (unsigned char *) &input;
+    writeByte(p[0]);
+    writeByte(p[1]);
+    writeByte(p[2]);
+    writeByte(p[3]);
 }
 
-//needs reviewing
-void nSerializedObj::writeInt64(unsigned long input)
+void BaseSerializedObj::writeInt32(int32_t input)
 {
-    resizeBufferNeeded( (long)byteSize_writeInt64 );
-    char n[8];
-    n[0] = (input & 0xFF);
-    n[1] = (input & 0xFF00) >> 8;
-    n[2] = (input & 0xFF0000) >> 16;
-    n[3] = (input & 0xFF000000) >> 24;
-    n[4] = (input & 0xFF0000000) >> 32;
-    n[5] = (input & 0xFF00000000) >> 40;
-    n[6] = (input & 0xFF000000000) >> 48;
-    n[7] = (input & 0xFF0000000000) >> 56;
-    int i = 0;
-    while( i < 8 )
-    {
-        writeByte(n[i]);
-        i++;
-    }
+    resizeBufferNeeded( byteSize_writeInt32 );
+    unsigned char * p = (unsigned char *) &input;
+    writeByte(p[0]);
+    writeByte(p[1]);
+    writeByte(p[2]);
+    writeByte(p[3]);
 }
 
+
+
+void BaseSerializedObj::writeInt64(int64_t input)
+{
+    resizeBufferNeeded( byteSize_writeUInt64 );
+    unsigned char * p = (unsigned char *) &input;
+    writeByte(p[0]);
+    writeByte(p[1]);
+    writeByte(p[2]);
+    writeByte(p[3]);
+    writeByte(p[4]);
+    writeByte(p[5]);
+    writeByte(p[6]);
+    writeByte(p[7]);
+}
+
+
+
+void BaseSerializedObj::writeUInt64(uint64_t input)
+{
+    resizeBufferNeeded( byteSize_writeUInt64 );
+    unsigned char * p = (unsigned char *) &input;
+    writeByte(p[0]);
+    writeByte(p[1]);
+    writeByte(p[2]);
+    writeByte(p[3]);
+    writeByte(p[4]);
+    writeByte(p[5]);
+    writeByte(p[6]);
+    writeByte(p[7]);
+}
 
 //single precision floating-point | IEEE 754
-void nSerializedObj::writeFloat(float input)
+void BaseSerializedObj::writeFloat(float input)
 {
     resizeBufferNeeded(byteSize_writeFloat);
     unsigned char * p = (unsigned char *) &input;
@@ -204,7 +241,7 @@ void nSerializedObj::writeFloat(float input)
 
 
 //double precision floating-point | IEEE 754
-void nSerializedObj::writeDouble(double input)
+void BaseSerializedObj::writeDouble(double input)
 {
     resizeBufferNeeded(byteSize_writeDouble);
     
@@ -223,11 +260,10 @@ void nSerializedObj::writeDouble(double input)
 
 
 //only supports char arrays of length value of 4 bytes
-void nSerializedObj::writeChars(char* input)
+void BaseSerializedObj::writeChars(char* input)
 {
     int size = strlen(input);
     resizeBufferNeeded(byteSize_writeChars + size);
-    //writeByte(Chars_Type);
     char n[4];
     n[0] = (size & 0xFF);
     n[1] = (size & 0xFF00) >> 8;
@@ -255,7 +291,7 @@ void nSerializedObj::writeChars(char* input)
 
 
 //only supports char arrays of length value of 4 bytes
-void nSerializedObj::writeString(std::string input)
+void BaseSerializedObj::writeString(std::string input)
 {
     int size = input.length();
     resizeBufferNeeded(byteSize_writeString + size);

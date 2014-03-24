@@ -11,31 +11,32 @@
 
 Benchmarker::Benchmarker()
 {
-    startValue = 0;
-    stopValue = 0;
-    delta = 0;
+    
 }
 
 
 void Benchmarker::start()
 {
-    gettimeofday(&t, &tzp);
-    startValue = t.tv_sec + t.tv_usec*1e-6;
+    startValue = std::chrono::high_resolution_clock::now();
 }
 
 void Benchmarker::stop()
 {
-    gettimeofday(&t, &tzp);
-    stopValue =  t.tv_sec + t.tv_usec*1e-6;
-    delta = stopValue - startValue;
+    stopValue = std::chrono::high_resolution_clock::now();
 }
 
-double Benchmarker::get()
+void Benchmarker::getMS()
 {
-    return delta;
+    std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(stopValue - startValue).count() << " ms\n";
 }
 
-double Benchmarker::getMS()
+void Benchmarker::getNS()
 {
-    return delta * 1000;
+    std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(stopValue - startValue).count() << " ns\n";
+}
+
+void Benchmarker::getAll()
+{
+    auto diff = stopValue - startValue;
+    std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(stopValue - startValue).count() << " ms " << std::chrono::duration_cast<std::chrono::nanoseconds>(diff).count() << " ns\n" << std::chrono::duration_cast<std::chrono::microseconds>(diff).count() << " mics\n";
 }
