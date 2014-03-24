@@ -105,24 +105,60 @@ void TestCases::testReadAllIntValues()
     input_file.close();
     obj->~BaseSerializedObj();
     
-    if(_t0 != t0) { std::cout << " \nError: t0 failed "; }
-    if(_t1 != t1) { std::cout << " \nError: t1 failed "; }
-    if(_t2 != t2) { std::cout << " \nError: t2 failed "; }
-    if(_t3 != t3) { std::cout << " \nError: t3 failed "; }
-    if(_t4 != t4) { std::cout << " \nError: t4 failed "; }
-    if(_t5 != t5) { std::cout << " \nError: t5 failed "; }
-    if(_t6 != t6) { std::cout << " \nError: t6 failed "; }
-    if(_t7 != t7) { std::cout << " \nError: t7 failed "; }
-    if(_t8 != t8) { std::cout << " \nError: t8 failed "; }
-    if(_t9 != t9) { std::cout << " \nError: t9 failed "; }
-    if(_t10 != t10) { std::cout << " \nError: t10 failed "; }
-    if(_t11 != t11) { std::cout << " \nError: t11 failed "; }
-    if(_t12 != t12) { std::cout << " \nError: t12 failed "; }
-    if(_t13 != t13) { std::cout << " \nError: t13 failed "; }
-    if(_t14 != t14) { std::cout << " \nError: t14 failed "; }
-    if(_t15 != t15) { std::cout << " \nError: t15 failed "; }
-    if(_t16 != t16) { std::cout << " \nError: t16 failed "; }
-    if(_t17 != t17) { std::cout << " \nError: t17 failed "; }
+    if(_t0 != t0)
+    { std::cout << " \nError: t0 != _t0 ( " << t0 << " != " << _t0 << " ) "; } else { std::cout << " \nSuccess: t0 == _t0 ( " << t0 << " == " << _t0 << " ) "; }
+    
+    if(_t1 != t1)
+    { std::cout << " \nError: t1 != _t1 ( " << t1 << " != " << _t1 << " ) "; } else { std::cout << " \nSuccess: t1 == _t1 ( " << t1 << " == " << _t1 << " ) "; }
+    
+    if(_t2 != t2)
+    { std::cout << " \nError: t2 != _t2 ( " << t2 << " != " << _t2 << " ) "; } else { std::cout << " \nSuccess: t2 == _t2 ( " << t2 << " == " << _t2 << " ) "; }
+        
+    if(_t3 != t3)
+    { std::cout << " \nError: t3 != _t3 ( " << t3 << " != " << _t3 << " ) "; } else { std::cout << " \nSuccess: t3 == _t3 ( " << t3 << " == " << _t3 << " ) "; }
+        
+    if(_t4 != t4)
+    { std::cout << " \nError: t4 != _t4 ( " << t4 << " != " << _t4 << " ) "; } else { std::cout << " \nSuccess: t4 == _t4 ( " << t4 << " == " << _t4 << " ) "; }
+        
+    if(_t5 != t5)
+    { std::cout << " \nError: t5 != _t5 ( " << t5 << " != " << _t5 << " ) "; } else { std::cout << " \nSuccess: t5 == _t5 ( " << t5 << " == " << _t5 << " ) "; }
+        
+    if(_t6 != t6)
+    { std::cout << " \nError: t6 != _t6 ( " << t6 << " != " << _t6 << " ) "; } else { std::cout << " \nSuccess: t6 == _t6 ( " << t6 << " == " << _t6 << " ) "; }
+        
+    if(_t7 != t7)
+    { std::cout << " \nError: t7 != _t7 ( " << t7 << " != " << _t7 << " ) "; } else { std::cout << " \nSuccess: t7 == _t7 ( " << t7 << " == " << _t7 << " ) "; }
+    
+    if(_t8 != t8)
+    { std::cout << " \nError: t8 != _t8 ( " << t8 << " != " << _t8 << " ) "; } else { std::cout << " \nSuccess: t8 == _t8 ( " << t8 << " == " << _t8 << " ) "; }
+    
+    if(_t9 != t9)
+    { std::cout << " \nError: t9 != _t9 ( " << t9 << " != " << _t9 << " ) "; } else { std::cout << " \nSuccess: t9 == _t9 ( " << t9 << " == " << _t9 << " ) "; }
+    
+    if(_t10 != t10)
+    { std::cout << " \nError: t10 != _t10 ( " << t10 << " != " << _t10 << " ) "; } else { std::cout << " \nSuccess: t10 == _t10 ( " << t10 << " == " << _t10 << " ) "; }
+    
+    if(_t11 != t11)
+    { std::cout << " \nError: t11 != _t11 ( " << t11 << " != " << _t11 << " ) "; } else { std::cout << " \nSuccess: t11 == _t11 ( " << t11 << " == " << _t11 << " ) "; }
+    
+    if(_t12 != t12)
+    { std::cout << " \nError: t12 != _t12 ( " << t12 << " != " << _t12 << " ) "; } else { std::cout << " \nSuccess: t12 == _t12 ( " << t12 << " == " << _t12 << " ) "; }
+    
+    if(_t13 != t13)
+    { std::cout << " \nError: t13 != _t13 ( " << t13 << " != " << _t13 << " ) "; } else { std::cout << " \nSuccess: t13 == _t13 ( " << t13 << " == " << _t13 << " ) "; }
+    
+    if(_t14 != t14)
+    { std::cout << " \nError: t14 != _t14 ( " << t14 << " != " << _t14 << " ) "; } else { std::cout << " \nSuccess: t14 == _t14 ( " << t14 << " == " << _t14 << " ) "; }
+    
+    if(_t15 != t15)
+    { std::cout << " \nError: t15 != _t15 ( " << t15 << " != " << _t15 << " ) "; } else { std::cout << " \nSuccess: t15 == _t15 ( " << t15 << " == " << _t15 << " ) "; }
+    
+    if(_t16 != t16)
+    { std::cout << " \nError: t16 != _t16 ( " << t16 << " != " << _t16 << " ) "; } else { std::cout << " \nSuccess: t16 == _t16 ( " << t16 << " == " << _t16 << " ) "; }
+    
+    if(_t17 != t17) 
+    { std::cout << " \nError: t17 != _t17 ( " << t17 << " != " << _t17 << " ) "; } else { std::cout << " \nSuccess: t17 == _t17 ( " << t17 << " == " << _t17 << " ) "; }
+    
     std::cout << "\n\n";
 }
 
