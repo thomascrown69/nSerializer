@@ -44,8 +44,10 @@ void BaseSerializedObj::resizeBufferNeeded(long _size)
         max = max + dif1;
         buffer = (char*) malloc(max);
         memcpy(buffer, tmp, max);
-        free(tmp);
-        
+		if(!tmp)
+		{
+			free(tmp);
+		}
     }
     current = current + _size;
 }
@@ -136,7 +138,8 @@ uint64_t BaseSerializedObj::readUInt64()
 
 char* BaseSerializedObj::readChars()
 {
-    int length = readInt32();
+    int length = readUInt32();
+	std::cout << " length " << length;
     char* r = (char*) malloc(length);
     int i = 0;
     while(i != length)
@@ -178,7 +181,7 @@ std::string BaseSerializedObj::readString()
 
 void BaseSerializedObj::writeUInt32(uint32_t input)
 {
-    resizeBufferNeeded( byteSize_writeInt32 );
+    resizeBufferNeeded( byteSize_writeUInt32 );
     unsigned char * p = (unsigned char *) &input;
     writeByte(p[0]);
     writeByte(p[1]);
@@ -264,29 +267,15 @@ void BaseSerializedObj::writeChars(char* input)
 {
     int size = strlen(input);
     resizeBufferNeeded(byteSize_writeChars + size);
-    char n[4];
-    n[0] = (size & 0xFF);
-    n[1] = (size & 0xFF00) >> 8;
-    n[2] = (size & 0xFF0000) >> 16;
-    n[3] = (size & 0xFF000000) >> 24;
-    //apply the length binary sequence
-    int i = 0;
-    while( i < 4 )
-    {
-        writeByte(n[i]);
-        i++;
-    }
-    //apply the string binary sequence
+    writeUInt32(size);
     int y = 0;
     while( y < size )
     {
         writeByte(input[y]);
         y++;
     }
-    if(!input)
-    {
-        free(input);
-    }
+    //free(input);
+    
 }
 
 

@@ -1,3 +1,6 @@
+#ifdef WIN32
+#pragma pack( 1 )
+#endif
 //
 //  nSerializedObj.h
 //  nSerializer
@@ -20,6 +23,7 @@
 
 #endif
 
+#define byteSize_writeUInt32 4
 #define byteSize_writeInt32 4
 #define byteSize_writeInt64 8
 #define byteSize_writeUInt64 8
@@ -52,7 +56,7 @@ class BaseSerializedObj
         BaseSerializedObj(long defaultBufferSize, char* bytearray);
         ~BaseSerializedObj();
 
-        //static nSerializedObj createSerializedObjFrom(char* bytearray);
+        static BaseSerializedObj createSerializedObjFrom(char* bytearray);
     
         char* getBytes();
         long getSize();

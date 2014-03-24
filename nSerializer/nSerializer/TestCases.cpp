@@ -36,13 +36,113 @@ uint64_t t15 = UINT64_MAX;
 long t16 = 4346731323546432;
 long t17 = -123246575343234;
 
+////////////////////////////
+
+char* t18;
+char* t19;
+char* t20;
+
+////////////////////////////
 
 Benchmarker* bench;
 
 TestCases::TestCases()
 {
     bench = new Benchmarker();
+    
 }
+
+
+void TestCases::testWriteAllCharsValues()
+{
+    
+    //t18 = "NasrZ";
+    
+    t19 = (char*) malloc(1024);
+    uint32_t i=0;
+    while(i != 1024)
+    {
+        t19[i] = 'A';
+        i++;
+    }
+    
+    t20 = (char*) malloc(967295);
+    //populuate 4294967295
+    i=0;
+    while(i != 967295)
+    {
+        t20[i] = 'B';
+        i++;
+    }
+    
+    
+    std::cout << "\n-----------------------------\n";
+    std::cout << "TESTING WRITE ALL CHARS MAX VALUES";
+    BaseSerializedObj* obj = new BaseSerializedObj(32);
+    bench->start();
+    
+    //obj->writeChars(t18);
+    obj->writeChars(t19);
+    //obj->writeChars(t20);
+    
+    bench->stop();
+    std::cout << "\n WRITE time taken : ";
+    bench->getAll();
+    std::ofstream output_file("data.tx", std::ios::binary);
+    output_file.write( obj->getBytes(), obj->getSize());
+    output_file.close();
+    obj->~BaseSerializedObj();
+    std::cout << "\n\n";
+}
+
+
+void TestCases::testReadAllCharsValues()
+{
+    std::cout << "\n-----------------------------\n";
+    std::cout << "TESTING READ ALL CHARS MAX VALUES";
+    
+    std::ifstream input_file("data.tx", std::ios::binary);
+    input_file.seekg (0, input_file.end);
+    long length = input_file.tellg();
+    input_file.seekg (0, input_file.beg);
+    char* pInputFile = (char*) malloc( length );
+    input_file.read(pInputFile, length);
+    
+    BaseSerializedObj* obj = new BaseSerializedObj(length, pInputFile);
+    bench->start();
+    
+    //char* _t18 = obj->readChars();
+    char* _t19 = obj->readChars();
+    //char* _t20 = obj->readChars();
+    
+    bench->stop();
+    std::cout << "\n READ time taken : ";
+    bench->getAll();
+    free(pInputFile);
+    input_file.close();
+    obj->~BaseSerializedObj();
+    
+    //if(strcmp(_t18, t18) != 0)
+    //{ std::cout << " \nError: t18 != _t18 ( " << strlen(t18) << " != " << strlen(_t18) << " ) "; } else { std::cout << " \nSuccess: t18 == _t18 ( " << strlen(t18) << " != " << strlen(_t18) << " ) "; }
+    
+    if(strcmp(_t19, t19) != 0)
+    { std::cout << " \nError: t19 != _t19 ( " << strlen(t19) << " != " << strlen(_t19) << " ) "; } else { std::cout << " \nSuccess: t19 == _t19 ( " << strlen(t19) << " != " << strlen(_t19) << " ) "; }
+    
+	std::cout << "\n\n _t19 : " << _t19;
+	std::cout << " \n\n\n ";
+	std::cout << " t19 : " << t19;
+
+    //if(strcmp(_t20, t20) != 0)
+    //{ std::cout << " \nError: t20 != _t20 ( " << strlen(t20) << " != " << strlen(_t20) << " ) "; } else { std::cout << " \nSuccess: t20 == _t20 ( " << strlen(t20) << " != " << strlen(_t20) << " ) "; }
+    
+    std::cout << "\n\n";
+    
+    //free(_t18);
+    free(_t19);
+    //free(_t20);
+
+}
+
 
 void TestCases::testReadAllIntValues()
 {
@@ -167,9 +267,8 @@ void TestCases::testWriteAllIntValues()
     
     std::cout << "\n-----------------------------\n";
     std::cout << "TESTING WRITE ALL INT MAX VALUES";
-    bench->start();
-    
     BaseSerializedObj* obj = new BaseSerializedObj(32);
+    bench->start();
     
     obj->writeInt32(t0);
     obj->writeUInt32(t1);

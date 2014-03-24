@@ -1,3 +1,6 @@
+#ifdef WIN32
+#pragma pack( 1 )
+#endif
 //
 //  Helpers.h
 //  nSerializer

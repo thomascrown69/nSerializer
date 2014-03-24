@@ -16,6 +16,8 @@ int main(int argc, const char * argv[])
     std::cout << "Hello, nSerializer World!\n\n\n";
     std::cout << "*** Press 1 to test Write Ints --- testWriteAllIntValues() \n";
     std::cout << "*** Press 2 to test Read Ints --- testReadAllIntValues() \n";
+    std::cout << "*** Press 3 to test Write Chars --- testWriteAllCharsValues() \n";
+    std::cout << "*** Press 4 to test Read Chars --- testReadAllCharsValues() \n";
     
     bool end = false;
     int i = 0;
@@ -32,11 +34,11 @@ int main(int argc, const char * argv[])
         }
         else if ( i==3 )
         {
-            
+            ts->testWriteAllCharsValues();
         }
         else if ( i==4 )
         {
-            
+            ts->testReadAllCharsValues();
         }
         
         std::cin >> i;

@@ -1,3 +1,6 @@
+#ifdef WIN32
+#pragma pack( 1 )
+#endif
 //
 //  TestCases.h
 //  nSerializer
@@ -26,4 +29,6 @@ class TestCases
     void testReadAllIntValues();
     void testWriteAllIntValues();
     
+    void testWriteAllCharsValues();
+    void testReadAllCharsValues();
 };
