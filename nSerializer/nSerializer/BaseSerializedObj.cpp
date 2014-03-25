@@ -96,12 +96,12 @@ long BaseSerializedObj::getSize()
 
 uint32_t BaseSerializedObj::readUInt32()
 {
-    uint32_t x =
+    uint32_t r =
     (readByte() & 0xFF) |
     (readByte() & 0xFF) << 8 |
     (readByte() & 0xFF) << 16 |
     (readByte() & 0xFF) << 24;
-    return x;
+    return r;
 }
 
 int32_t BaseSerializedObj::readInt32()
@@ -142,18 +142,17 @@ uint64_t BaseSerializedObj::readUInt64()
     return r;
 }
 
-char* BaseSerializedObj::readChars()
+void BaseSerializedObj::readChars(char** p)
 {
     int length = readInt32();
-    char* p = (char*) malloc(length+1);
+    *p = (char*) malloc(length+1);
     int i = 0;
     while(i != length)
     {
-        p[i] = readByte();
+        (*p)[i] = readByte();
         i++;
     }
-    p[length] = '\0';
-    return p;
+    (*p)[length] = '\0';
 }
 
 
@@ -283,25 +282,11 @@ void BaseSerializedObj::writeChars(char* input)
     buffer[counter] = '\0';
 }
 
-
-//only supports char arrays of length value of 4 bytes
 void BaseSerializedObj::writeString(std::string input)
 {
     int size = input.length();
-    resizeBufferNeeded(byteSize_writeString + size);
-    char n[4];
-    n[0] = (size & 0xFF);
-    n[1] = (size & 0xFF00) >> 8;
-    n[2] = (size & 0xFF0000) >> 16;
-    n[3] = (size & 0xFF000000) >> 24;
-    //apply the length binary sequence
-    int i = 0;
-    while( i < 4 )
-    {
-        writeByte(n[i]);
-        i++;
-    }
-    //apply the string binary sequence
+    resizeBufferNeeded(size);
+    writeInt32(size);
     int y = 0;
     while( y < size )
     {

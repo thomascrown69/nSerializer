@@ -18,6 +18,8 @@ int main(int argc, const char * argv[])
     std::cout << "*** Press 2 to test Read Ints --- testReadAllIntValues() \n";
     std::cout << "*** Press 3 to test Write Chars --- testWriteAllCharsValues() \n";
     std::cout << "*** Press 4 to test Read Chars --- testReadAllCharsValues() \n";
+    std::cout << "*** Press 5 to test Write Chars --- testWriteAllStringsValues() \n";
+    std::cout << "*** Press 6 to test Read Chars --- testReadAllStringsValues() \n";
     
     bool end = false;
     int i = 0;
@@ -39,6 +41,14 @@ int main(int argc, const char * argv[])
         else if ( i==4 )
         {
             ts->testReadAllCharsValues();
+        }
+        else if ( i==5 )
+        {
+            ts->testWriteAllStringsValues();
+        }
+        else if ( i==6 )
+        {
+            ts->testReadAllStringsValues();
         }
         
         std::cin >> i;

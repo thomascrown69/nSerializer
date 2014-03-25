@@ -81,8 +81,8 @@ class BaseSerializedObj
         int32_t readInt32();
         int64_t readInt64();
     
-        char* readChars();
-        //void readChars(char** p);
+        //char* readChars();
+        void readChars(char** p);
         double readDouble();
         float readFloat();
         std::string readString();

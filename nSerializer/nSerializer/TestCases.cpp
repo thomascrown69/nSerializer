@@ -44,6 +44,13 @@ char* t20;
 
 ////////////////////////////
 
+std::string t21;
+std::string t22;
+std::string t23;
+
+////////////////////////////
+
+
 Benchmarker* bench;
 
 TestCases::TestCases()
@@ -66,7 +73,7 @@ TestCases::TestCases()
     t19[t19Size] = '\0';
     
     
-    int t20Size =3024;
+    int t20Size =19024;
     t20 = (char*) malloc(t20Size+1);
     i=0;
     while(i != t20Size)
@@ -76,6 +83,17 @@ TestCases::TestCases()
     }
     t20[t20Size] = '\0';
 
+    
+    t21 = "S";
+    
+    t22 = "Zds@adsadas@@@dsadsaM";
+    
+    i = 0;
+    while( i != 3024 )
+    {
+        t23.push_back('A');
+        i++;
+    }
     
 }
 
@@ -118,9 +136,10 @@ void TestCases::testReadAllCharsValues()
     BaseSerializedObj* obj = new BaseSerializedObj(length, pInputFile);
     bench->start();
     
-    char* _t18 = obj->readChars();
-    char* _t19= obj->readChars();
-    char* _t20 = obj->readChars();
+    char* _t18, *_t19, *_t20;
+    obj->readChars(&_t18);
+    obj->readChars(&_t19);
+    obj->readChars(&_t20);
     
     bench->stop();
     std::cout << "\n READ time taken : ";
@@ -132,31 +151,105 @@ void TestCases::testReadAllCharsValues()
     if(strcmp(_t18, t18) != 0)
     { std::cout << " \nError: t18 != _t18 ( " << strlen(t18) << " != " << strlen(_t18) << " ) "; } else { std::cout << " \nSuccess: t18 == _t18 ( " << strlen(t18) << " != " << strlen(_t18) << " ) "; }
 
-    std::cout << "\n\n _t18 : " << _t18;
-	std::cout << " \n\n\n ";
-	std::cout << " t18 : " << t18;
-	std::cout << " \n\n\n ";
+    //std::cout << "\n\n _t18 : " << _t18;
+	//std::cout << " \n\n\n ";
+	//std::cout << " t18 : " << t18;
+	//std::cout << " \n\n\n ";
     
     if(strcmp(_t19, t19) != 0)
     { std::cout << " \nError: t19 != _t19 ( " << strlen(t19) << " != " << strlen(_t19) << " ) "; } else { std::cout << " \nSuccess: t19 == _t19 ( " << strlen(t19) << " != " << strlen(_t19) << " ) "; }
     
-	std::cout << "\n\n _t19 : " << _t19;
-	std::cout << " \n\n\n ";
-	std::cout << " t19 : " << t19;
-	std::cout << " \n\n\n ";
+	//std::cout << "\n\n _t19 : " << _t19;
+	//std::cout << " \n\n\n ";
+	//std::cout << " t19 : " << t19;
+	//std::cout << " \n\n\n ";
      
     if(strcmp(_t20, t20) != 0)
     { std::cout << " \nError: t20 != _t20 ( " << strlen(t20) << " != " << strlen(_t20) << " ) "; } else { std::cout << " \nSuccess: t20 == _t20 ( " << strlen(t20) << " != " << strlen(_t20) << " ) "; }
     
-    std::cout << "\n\n _t20 : " << _t20;
-	std::cout << " \n\n\n ";
-	std::cout << " t20 : " << t20;
-	std::cout << " \n\n\n ";
+    //std::cout << "\n\n _t20 : " << _t20;
+	//std::cout << " \n\n\n ";
+	//std::cout << " t20 : " << t20;
+	//std::cout << " \n\n\n ";
     
     free(_t18);
     free(_t19);
     free(_t20);
 
+}
+
+void TestCases::testWriteAllStringsValues()
+{
+    std::cout << "\n-----------------------------\n";
+    std::cout << "TESTING WRITE ALL CHARS MAX VALUES";
+    BaseSerializedObj* obj = new BaseSerializedObj(32);
+    bench->start();
+    
+    obj->writeString(t21);
+    obj->writeString(t22);
+    obj->writeString(t23);
+    
+    bench->stop();
+    std::cout << "\n WRITE time taken : ";
+    bench->getAll();
+    std::ofstream output_file("data.tx", std::ios::binary);
+    output_file.write(obj->getBytes(), obj->getSize());
+    output_file.close();
+    obj->~BaseSerializedObj();
+    std::cout << "\n\n";
+}
+
+void TestCases::testReadAllStringsValues()
+{
+    std::cout << "\n-----------------------------\n";
+    std::cout << "TESTING READ ALL STRINGS MAX VALUES";
+    
+    std::ifstream input_file("data.tx", std::ios::binary);
+    input_file.seekg (0, input_file.end);
+    long length = input_file.tellg();
+    input_file.seekg (0, input_file.beg);
+    char* pInputFile = (char*) malloc( length );
+    input_file.read(pInputFile, length);
+    
+    BaseSerializedObj* obj = new BaseSerializedObj(length, pInputFile);
+    bench->start();
+    
+    std::string _t21, _t22, _t23;
+    _t21 = obj->readString();
+    _t22 = obj->readString();
+    _t23 = obj->readString();
+    
+    bench->stop();
+    std::cout << "\n READ time taken : ";
+    bench->getAll();
+    free(pInputFile);
+    input_file.close();
+    obj->~BaseSerializedObj();
+
+    if(t21.compare(_t21) != 0)
+    { std::cout << " \nError: t21 != _t21 ( " << t21.length() << " != " << _t21.length() << " ) "; } else { std::cout << " \nSuccess: t21 == _t21 ( " << t21.length() << " != " << _t21.length() << " ) "; }
+    
+    //std::cout << "\n\n _t21 : " << _t21;
+	//std::cout << " \n\n ";
+	//std::cout << " t21 : " << t21;
+	//std::cout << " \n\n\n ";
+    
+    if(t22.compare(_t22) != 0)
+    { std::cout << " \nError: t22 != _t22 ( " << t22.length() << " != " << _t22.length() << " ) "; } else { std::cout << " \nSuccess: t22 == _t22 ( " << t22.length() << " != " << _t22.length() << " ) "; }
+    
+    //std::cout << "\n\n _t22 : " << _t22;
+	//std::cout << " \n\n ";
+	//std::cout << " t22 : " << t22;
+	//std::cout << " \n\n\n ";
+    
+    if(t23.compare(_t23) != 0)
+    { std::cout << " \nError: t23 != _t23 ( " << t23.length() << " != " << _t23.length() << " ) "; } else { std::cout << " \nSuccess: t23 == _t23 ( " << t23.length() << " != " << _t23.length() << " ) "; }
+    
+    //std::cout << "\n\n _t23 : " << _t23;
+	//std::cout << " \n\n ";
+	//std::cout << " t23 : " << t23;
+	//std::cout << " \n\n\n ";
+    
 }
 
 

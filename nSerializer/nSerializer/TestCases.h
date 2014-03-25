@@ -31,4 +31,7 @@ class TestCases
     
     void testWriteAllCharsValues();
     void testReadAllCharsValues();
+    
+    void testWriteAllStringsValues();
+    void testReadAllStringsValues();
 };
