@@ -33,8 +33,8 @@ uint64_t t13 = 943853843435343;
 int64_t t14 = INT64_MAX;
 uint64_t t15 = UINT64_MAX;
 
-long t16 = 4346731323546432;
-long t17 = -123246575343234;
+//long t16 = 4346731323546432;
+//long t17 = -123246575343234;
 
 ////////////////////////////
 
@@ -50,46 +50,53 @@ TestCases::TestCases()
 {
     bench = new Benchmarker();
     
+    t18 = (char*) malloc(6);
+    strncpy(t18, "ZdsadA" , 6);
+    t18[6] = '\0';
+
+    
+    int t19Size = 3024;
+    t19 = (char*) malloc(t19Size+1);
+    uint32_t i=0;
+    while(i != t19Size)
+    {
+        t19[i] = 'Z';
+        i++;
+    }
+    t19[t19Size] = '\0';
+    
+    
+    int t20Size =3024;
+    t20 = (char*) malloc(t20Size+1);
+    i=0;
+    while(i != t20Size)
+    {
+        t20[i] = 'T';
+        i++;
+    }
+    t20[t20Size] = '\0';
+
+    
 }
 
 
 void TestCases::testWriteAllCharsValues()
 {
     
-    //t18 = "NasrZ";
-    
-    t19 = (char*) malloc(1024);
-    uint32_t i=0;
-    while(i != 1024)
-    {
-        t19[i] = 'A';
-        i++;
-    }
-    
-    t20 = (char*) malloc(967295);
-    //populuate 4294967295
-    i=0;
-    while(i != 967295)
-    {
-        t20[i] = 'B';
-        i++;
-    }
-    
-    
     std::cout << "\n-----------------------------\n";
     std::cout << "TESTING WRITE ALL CHARS MAX VALUES";
     BaseSerializedObj* obj = new BaseSerializedObj(32);
     bench->start();
     
-    //obj->writeChars(t18);
+    obj->writeChars(t18);
     obj->writeChars(t19);
-    //obj->writeChars(t20);
+    obj->writeChars(t20);
     
     bench->stop();
     std::cout << "\n WRITE time taken : ";
     bench->getAll();
     std::ofstream output_file("data.tx", std::ios::binary);
-    output_file.write( obj->getBytes(), obj->getSize());
+    output_file.write(obj->getBytes(), obj->getSize());
     output_file.close();
     obj->~BaseSerializedObj();
     std::cout << "\n\n";
@@ -111,9 +118,9 @@ void TestCases::testReadAllCharsValues()
     BaseSerializedObj* obj = new BaseSerializedObj(length, pInputFile);
     bench->start();
     
-    //char* _t18 = obj->readChars();
-    char* _t19 = obj->readChars();
-    //char* _t20 = obj->readChars();
+    char* _t18 = obj->readChars();
+    char* _t19= obj->readChars();
+    char* _t20 = obj->readChars();
     
     bench->stop();
     std::cout << "\n READ time taken : ";
@@ -122,8 +129,13 @@ void TestCases::testReadAllCharsValues()
     input_file.close();
     obj->~BaseSerializedObj();
     
-    //if(strcmp(_t18, t18) != 0)
-    //{ std::cout << " \nError: t18 != _t18 ( " << strlen(t18) << " != " << strlen(_t18) << " ) "; } else { std::cout << " \nSuccess: t18 == _t18 ( " << strlen(t18) << " != " << strlen(_t18) << " ) "; }
+    if(strcmp(_t18, t18) != 0)
+    { std::cout << " \nError: t18 != _t18 ( " << strlen(t18) << " != " << strlen(_t18) << " ) "; } else { std::cout << " \nSuccess: t18 == _t18 ( " << strlen(t18) << " != " << strlen(_t18) << " ) "; }
+
+    std::cout << "\n\n _t18 : " << _t18;
+	std::cout << " \n\n\n ";
+	std::cout << " t18 : " << t18;
+	std::cout << " \n\n\n ";
     
     if(strcmp(_t19, t19) != 0)
     { std::cout << " \nError: t19 != _t19 ( " << strlen(t19) << " != " << strlen(_t19) << " ) "; } else { std::cout << " \nSuccess: t19 == _t19 ( " << strlen(t19) << " != " << strlen(_t19) << " ) "; }
@@ -131,15 +143,19 @@ void TestCases::testReadAllCharsValues()
 	std::cout << "\n\n _t19 : " << _t19;
 	std::cout << " \n\n\n ";
 	std::cout << " t19 : " << t19;
-
-    //if(strcmp(_t20, t20) != 0)
-    //{ std::cout << " \nError: t20 != _t20 ( " << strlen(t20) << " != " << strlen(_t20) << " ) "; } else { std::cout << " \nSuccess: t20 == _t20 ( " << strlen(t20) << " != " << strlen(_t20) << " ) "; }
+	std::cout << " \n\n\n ";
+     
+    if(strcmp(_t20, t20) != 0)
+    { std::cout << " \nError: t20 != _t20 ( " << strlen(t20) << " != " << strlen(_t20) << " ) "; } else { std::cout << " \nSuccess: t20 == _t20 ( " << strlen(t20) << " != " << strlen(_t20) << " ) "; }
     
-    std::cout << "\n\n";
+    std::cout << "\n\n _t20 : " << _t20;
+	std::cout << " \n\n\n ";
+	std::cout << " t20 : " << t20;
+	std::cout << " \n\n\n ";
     
-    //free(_t18);
+    free(_t18);
     free(_t19);
-    //free(_t20);
+    free(_t20);
 
 }
 
@@ -195,8 +211,8 @@ void TestCases::testReadAllIntValues()
     _t13 = obj->readUInt64();
     _t14 = obj->readInt64();
     _t15 = obj->readUInt64();
-    _t16 = obj->readInt64();
-    _t17 = obj->readInt64();
+    //_t16 = obj->readInt64();
+    //_t17 = obj->readInt64();
     
     bench->stop();
     std::cout << "\n READ time taken : ";
@@ -253,11 +269,11 @@ void TestCases::testReadAllIntValues()
     if(_t15 != t15)
     { std::cout << " \nError: t15 != _t15 ( " << t15 << " != " << _t15 << " ) "; } else { std::cout << " \nSuccess: t15 == _t15 ( " << t15 << " == " << _t15 << " ) "; }
     
-    if(_t16 != t16)
-    { std::cout << " \nError: t16 != _t16 ( " << t16 << " != " << _t16 << " ) "; } else { std::cout << " \nSuccess: t16 == _t16 ( " << t16 << " == " << _t16 << " ) "; }
+    //if(_t16 != t16)
+    //{ std::cout << " \nError: t16 != _t16 ( " << t16 << " != " << _t16 << " ) "; } else { std::cout << " \nSuccess: t16 == _t16 ( " << t16 << " == " << _t16 << " ) "; }
     
-    if(_t17 != t17) 
-    { std::cout << " \nError: t17 != _t17 ( " << t17 << " != " << _t17 << " ) "; } else { std::cout << " \nSuccess: t17 == _t17 ( " << t17 << " == " << _t17 << " ) "; }
+    //if(_t17 != t17)
+    //{ std::cout << " \nError: t17 != _t17 ( " << t17 << " != " << _t17 << " ) "; } else { std::cout << " \nSuccess: t17 == _t17 ( " << t17 << " == " << _t17 << " ) "; }
     
     std::cout << "\n\n";
 }
@@ -295,8 +311,8 @@ void TestCases::testWriteAllIntValues()
     obj->writeInt64(t14);
     obj->writeUInt64(t15);
     
-    obj->writeInt64(t16);
-    obj->writeInt64(t17);
+    //obj->writeInt64(t16);
+    //obj->writeInt64(t17);
     
     
     bench->stop();

@@ -32,6 +32,8 @@ BaseSerializedObj::~BaseSerializedObj()
     free(buffer);
 }
 
+
+
 void BaseSerializedObj::resizeBufferNeeded(long _size)
 {
     long dif2 = labs(current + _size);
@@ -50,6 +52,12 @@ void BaseSerializedObj::resizeBufferNeeded(long _size)
 		}
     }
     current = current + _size;
+}
+
+void BaseSerializedObj::writeChar(char b)
+{
+    buffer[counter] = b;
+    counter++;
 }
 
 void BaseSerializedObj::writeByte(int b)
@@ -131,23 +139,21 @@ uint64_t BaseSerializedObj::readUInt64()
     ((uint64_t)readByte() & 0xFF) << 40 |
     ((uint64_t)readByte() & 0xFF) << 48 |
     ((uint64_t)readByte() & 0xFF) << 56;
-    
     return r;
-    
 }
 
 char* BaseSerializedObj::readChars()
 {
-    int length = readUInt32();
-	std::cout << " length " << length;
-    char* r = (char*) malloc(length);
+    int length = readInt32();
+    char* p = (char*) malloc(length+1);
     int i = 0;
     while(i != length)
     {
-        r[i] = readByte();
+        p[i] = readByte();
         i++;
     }
-    return r;
+    p[length] = '\0';
+    return p;
 }
 
 
@@ -266,16 +272,15 @@ void BaseSerializedObj::writeDouble(double input)
 void BaseSerializedObj::writeChars(char* input)
 {
     int size = strlen(input);
-    resizeBufferNeeded(byteSize_writeChars + size);
-    writeUInt32(size);
+    resizeBufferNeeded(size+1);
+    writeInt32(size);
     int y = 0;
     while( y < size )
     {
         writeByte(input[y]);
         y++;
     }
-    //free(input);
-    
+    buffer[counter] = '\0';
 }
 
 

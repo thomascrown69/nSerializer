@@ -18,6 +18,7 @@
 #if defined( _WIN32 ) || defined( _WIN64 )
 
 #include <stdint.h>
+#include <Windows.h>
 
 #else
 
@@ -27,8 +28,8 @@
 #define byteSize_writeInt32 4
 #define byteSize_writeInt64 8
 #define byteSize_writeUInt64 8
-#define byteSize_writeChars 4
-#define byteSize_writeString 4
+#define byteSize_writeChars 0
+#define byteSize_writeString 0
 #define byteSize_writeFloat 4
 #define byteSize_writeDouble 8
 
@@ -48,6 +49,7 @@ class BaseSerializedObj
         void writeByte(int b);
         char readByte();
         char readByteAt(int _counter);
+        void writeChar(char b);
     
         void resizeBufferNeeded(long _size);
     
@@ -80,6 +82,7 @@ class BaseSerializedObj
         int64_t readInt64();
     
         char* readChars();
+        //void readChars(char** p);
         double readDouble();
         float readFloat();
         std::string readString();
