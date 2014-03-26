@@ -15,9 +15,9 @@ Java version: 0% <br />
 <br />
 
 v0.1: <br />
-Cover most Basic Primitive Types - 90% (only int and long implemented, no bigger than 8bytes data types yet) <br />
-Test Cases for the types - 60% <br />
-Type validators (tests) for both 32 & 64 bit - 0% <br />
+Array Types - 0%
+Cover most Basic Primitive Types - 100% (only int and long implemented, no bigger than 8bytes data types yet) <br />
+Test Cases for the types - 100% <br />
 Benchmark tools - 100% <br />
 Compare to other libs - 0% <br />
 Separate the example and the lib - 0% <br />
