@@ -1,10 +1,13 @@
 nSerializer
 ===========
 
-What is this!?
-Just a small lightweight serialising library mostly for networking in mind, crossplatform ( Win, Linux, Mac, Android, iOS). 
-This small hobby project is also part of my practice to become a better programmer!
-There's a long road ahead. 
+What is this?
+Just a small lightweight serialising library mostly for networking, crossplatform ( Win, Linux, Mac, Android, iOS). 
+
+
+Tested and compiled with:
+-Visual Studio 2012 in Windows 7
+-XCode - in Mac OS X Maverick
 
 
 TODO <br /><br />
