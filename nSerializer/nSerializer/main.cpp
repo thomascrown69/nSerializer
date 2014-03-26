@@ -18,8 +18,10 @@ int main(int argc, const char * argv[])
     std::cout << "*** Press 2 to test Read Ints --- testReadAllIntValues() \n";
     std::cout << "*** Press 3 to test Write Chars --- testWriteAllCharsValues() \n";
     std::cout << "*** Press 4 to test Read Chars --- testReadAllCharsValues() \n";
-    std::cout << "*** Press 5 to test Write Chars --- testWriteAllStringsValues() \n";
-    std::cout << "*** Press 6 to test Read Chars --- testReadAllStringsValues() \n";
+    std::cout << "*** Press 5 to test Write Strings --- testWriteAllStringsValues() \n";
+    std::cout << "*** Press 6 to test Read Strings --- testReadAllStringsValues() \n";
+    std::cout << "*** Press 7 to test Write Floating Points --- testWriteAllFloatingPointsValues() \n";
+    std::cout << "*** Press 8 to test Read Floating Points --- testReadAllFloatingPointsValues() \n";
     
     bool end = false;
     int i = 0;
@@ -49,6 +51,14 @@ int main(int argc, const char * argv[])
         else if ( i==6 )
         {
             ts->testReadAllStringsValues();
+        }
+        else if ( i==7 )
+        {
+            ts->testWriteAllFloatingPointsValues();
+        }
+        else if ( i==8 )
+        {
+            ts->testReadAllFloatingPointsValues();
         }
         
         std::cin >> i;

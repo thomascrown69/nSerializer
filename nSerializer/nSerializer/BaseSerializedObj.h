@@ -14,6 +14,7 @@
 
 #include <iostream>
 #include <math.h>
+#include "Helpers.h"
 
 #if defined( _WIN32 ) || defined( _WIN64 )
 
@@ -24,6 +25,8 @@
 
 #endif
 
+#define byteSize_writeInt16 2
+#define byteSize_writeUInt16 2
 #define byteSize_writeUInt32 4
 #define byteSize_writeInt32 4
 #define byteSize_writeInt64 8
@@ -53,6 +56,13 @@ class BaseSerializedObj
     
         void resizeBufferNeeded(long _size);
     
+    
+        union d2b
+        {
+            double value;
+            char bytes[sizeof (double)]; // avoid magic numbers
+        };
+    
     public:
         BaseSerializedObj(long defaultBufferSize);
         BaseSerializedObj(long defaultBufferSize, char* bytearray);
@@ -63,25 +73,27 @@ class BaseSerializedObj
         char* getBytes();
         long getSize();
 
+        void writeInt16(int16_t input);
         void writeInt32(int32_t input);
         void writeInt64(int64_t input);
 
+        void writeUInt16(uint16_t input);
         void writeUInt32(uint32_t input);
         void writeUInt64(uint64_t input);
-
     
         void writeChars(char* input);
         void writeDouble(double input);
         void writeFloat(float input);
         void writeString(std::string input);
     
+        uint16_t readUInt16();
         uint32_t readUInt32();
         uint64_t readUInt64();
     
+        int16_t readInt16();
         int32_t readInt32();
         int64_t readInt64();
     
-        //char* readChars();
         void readChars(char** p);
         double readDouble();
         float readFloat();

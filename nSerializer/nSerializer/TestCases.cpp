@@ -8,6 +8,11 @@
 
 #include "TestCases.h"
 
+int16_t t01 = INT16_MAX;
+uint16_t t02 = UINT16_MAX;
+int16_t t03 = INT16_MIN;
+uint16_t t04 = 4;
+
 int32_t t0 = INT32_MIN;
 uint32_t t1 = 0;
 
@@ -50,6 +55,22 @@ std::string t23;
 
 ////////////////////////////
 
+float t24 = 0.1;
+float t25 = -0.5;
+float t26 = 435.34;
+
+#if defined( _WIN32 ) || defined( _WIN64 )
+float t27 = FLT_MAX;
+#else
+float t27 = MAXFLOAT;
+#endif
+
+double t28 = -95743.2;
+double t29 = 93.1;
+double t30 = 43599.43533;
+double t31 = -0.3413;
+
+////////////////////////////
 
 Benchmarker* bench;
 
@@ -60,7 +81,6 @@ TestCases::TestCases()
     t18 = (char*) malloc(6);
     strncpy(t18, "ZdsadA" , 6);
     t18[6] = '\0';
-
     
     int t19Size = 3024;
     t19 = (char*) malloc(t19Size+1);
@@ -72,7 +92,6 @@ TestCases::TestCases()
     }
     t19[t19Size] = '\0';
     
-    
     int t20Size =19024;
     t20 = (char*) malloc(t20Size+1);
     i=0;
@@ -82,12 +101,9 @@ TestCases::TestCases()
         i++;
     }
     t20[t20Size] = '\0';
-
     
     t21 = "S";
-    
     t22 = "Zds@adsadas@@@dsadsaM";
-    
     i = 0;
     while( i != 3024 )
     {
@@ -98,11 +114,90 @@ TestCases::TestCases()
 }
 
 
+void TestCases::testWriteAllFloatingPointsValues()
+{
+    std::cout << "\n-----------------------------\n";
+    std::cout << "TESTING WRITE ALL FLOATING POINT VALUES";
+    BaseSerializedObj* obj = new BaseSerializedObj(32);
+    bench->start();
+    
+    obj->writeFloat(t24);
+    obj->writeFloat(t25);
+    obj->writeFloat(t26);
+    obj->writeFloat(t27);
+    
+    obj->writeDouble(t28);
+    obj->writeDouble(t29);
+    obj->writeDouble(t30);
+    obj->writeDouble(t31);
+    
+    bench->stop();
+    std::cout << "\n WRITE time taken : ";
+    bench->getAll();
+    std::ofstream output_file("data.tx", std::ios::binary);
+    output_file.write(obj->getBytes(), obj->getSize());
+    output_file.close();
+    obj->~BaseSerializedObj();
+    std::cout << "\n\n";
+}
+
+void TestCases::testReadAllFloatingPointsValues()
+{
+    std::cout << "\n-----------------------------\n";
+    std::cout << "TESTING READ ALL FLOATING POINT VALUES";
+    
+    std::ifstream input_file("data.tx", std::ios::binary);
+    input_file.seekg (0, input_file.end);
+    long length = input_file.tellg();
+    input_file.seekg (0, input_file.beg);
+    char* pInputFile = (char*) malloc( length );
+    input_file.read(pInputFile, length);
+    
+    BaseSerializedObj* obj = new BaseSerializedObj(length, pInputFile);
+    bench->start();
+    
+    float _t24 = obj->readFloat();
+    float _t25 = obj->readFloat();
+    float _t26 = obj->readFloat();
+    float _t27 = obj->readFloat();
+    
+    double _t28 = obj->readDouble();
+    double _t29 = obj->readDouble();
+    double _t30 = obj->readDouble();
+    double _t31 = obj->readDouble();
+    
+    if(_t24 != t24)
+    { std::cout << " \nError: t24 != _t24 ( " << t24 << " != " << t24 << " ) "; } else { std::cout << " \nSuccess: t24 == _t24 ( " << t24 << " == " << _t24 << " ) "; }
+
+    if(_t25 != t25)
+    { std::cout << " \nError: t25 != _t25 ( " << t25 << " != " << t25 << " ) "; } else { std::cout << " \nSuccess: t25 == _t25 ( " << t25 << " == " << _t25 << " ) "; }
+
+    if(_t26 != t26)
+    { std::cout << " \nError: t26 != _t26 ( " << t26 << " != " << t26 << " ) "; } else { std::cout << " \nSuccess: t26 == _t26 ( " << t26 << " == " << _t26 << " ) "; }
+
+    if(_t27 != t27)
+    { std::cout << " \nError: t27 != _t27 ( " << t27 << " != " << t27 << " ) "; } else { std::cout << " \nSuccess: t27 == _t27 ( " << t27 << " == " << _t27 << " ) "; }
+
+    
+    std::cout << "\n\nDoubles wont be compared automatically due to precision, check them manually.\n";
+    std::cout << "\nt28: " << t28 << " t28: " << _t28;
+    std::cout << "\nt29: " << t29 << " t29: " << _t29;
+    std::cout << "\nt30: " << t30 << " t30: " << _t30;
+    std::cout << "\nt31: " << t31 << " t31: " << _t31;
+    
+    
+    bench->stop();
+    std::cout << "\n\n\n READ time taken : ";
+    bench->getAll();
+    free(pInputFile);
+    input_file.close();
+    obj->~BaseSerializedObj();
+}
+
 void TestCases::testWriteAllCharsValues()
 {
-    
     std::cout << "\n-----------------------------\n";
-    std::cout << "TESTING WRITE ALL CHARS MAX VALUES";
+    std::cout << "TESTING WRITE ALL CHARS VALUES";
     BaseSerializedObj* obj = new BaseSerializedObj(32);
     bench->start();
     
@@ -124,7 +219,7 @@ void TestCases::testWriteAllCharsValues()
 void TestCases::testReadAllCharsValues()
 {
     std::cout << "\n-----------------------------\n";
-    std::cout << "TESTING READ ALL CHARS MAX VALUES";
+    std::cout << "TESTING READ ALL CHARS VALUES";
     
     std::ifstream input_file("data.tx", std::ios::binary);
     input_file.seekg (0, input_file.end);
@@ -181,7 +276,7 @@ void TestCases::testReadAllCharsValues()
 void TestCases::testWriteAllStringsValues()
 {
     std::cout << "\n-----------------------------\n";
-    std::cout << "TESTING WRITE ALL CHARS MAX VALUES";
+    std::cout << "TESTING WRITE ALL STRING VALUES";
     BaseSerializedObj* obj = new BaseSerializedObj(32);
     bench->start();
     
@@ -202,7 +297,7 @@ void TestCases::testWriteAllStringsValues()
 void TestCases::testReadAllStringsValues()
 {
     std::cout << "\n-----------------------------\n";
-    std::cout << "TESTING READ ALL STRINGS MAX VALUES";
+    std::cout << "TESTING READ ALL STRING VALUES";
     
     std::ifstream input_file("data.tx", std::ios::binary);
     input_file.seekg (0, input_file.end);
@@ -265,6 +360,10 @@ void TestCases::testReadAllIntValues()
     char* pInputFile = (char*) malloc( length );
     input_file.read(pInputFile, length);
     
+    int16_t _t01;
+    uint16_t _t02;
+    int16_t _t03;
+    uint16_t _t04;
     int32_t _t0;
     uint32_t _t1;
     int32_t _t2;
@@ -281,12 +380,16 @@ void TestCases::testReadAllIntValues()
     uint64_t _t13;
     int64_t _t14;
     uint64_t _t15;
-    long _t16;
-    long _t17;
+    //long _t16;
+    //long _t17;
     
     BaseSerializedObj* obj = new BaseSerializedObj(length, pInputFile);
     bench->start();
     
+    _t01 = obj->readInt16();
+    _t02 = obj->readUInt16();
+    _t03 = obj->readInt16();
+    _t04 = obj->readUInt16();
     _t0 = obj->readInt32();
     _t1 = obj->readUInt32();
     _t2 = obj->readInt32();
@@ -313,6 +416,18 @@ void TestCases::testReadAllIntValues()
     free(pInputFile);
     input_file.close();
     obj->~BaseSerializedObj();
+    
+    if(_t01 != t01)
+    { std::cout << " \nError: t01 != _t01 ( " << t01 << " != " << _t01 << " ) "; } else { std::cout << " \nSuccess: t01 == _t01 ( " << t01 << " == " << _t01 << " ) "; }
+    
+    if(_t02 != t02)
+    { std::cout << " \nError: t02 != _t02 ( " << t02 << " != " << _t02 << " ) "; } else { std::cout << " \nSuccess: t02 == _t02 ( " << t02 << " == " << _t02 << " ) "; }
+    
+    if(_t03 != t03)
+    { std::cout << " \nError: t03 != _t03 ( " << t03 << " != " << _t03 << " ) "; } else { std::cout << " \nSuccess: t03 == _t03 ( " << t03 << " == " << _t03 << " ) "; }
+    
+    if(_t04 != t04)
+    { std::cout << " \nError: t04 != _t04 ( " << t04 << " != " << _t04 << " ) "; } else { std::cout << " \nSuccess: t04 == _t04 ( " << t04 << " == " << _t04 << " ) "; }
     
     if(_t0 != t0)
     { std::cout << " \nError: t0 != _t0 ( " << t0 << " != " << _t0 << " ) "; } else { std::cout << " \nSuccess: t0 == _t0 ( " << t0 << " == " << _t0 << " ) "; }
@@ -375,9 +490,15 @@ void TestCases::testWriteAllIntValues()
 {
     
     std::cout << "\n-----------------------------\n";
-    std::cout << "TESTING WRITE ALL INT MAX VALUES";
+    std::cout << "TESTING WRITE ALL INT VALUES";
     BaseSerializedObj* obj = new BaseSerializedObj(32);
     bench->start();
+    
+    obj->writeInt16(t01);
+    obj->writeUInt16(t02);
+    
+    obj->writeInt16(t03);
+    obj->writeUInt16(t04);
     
     obj->writeInt32(t0);
     obj->writeUInt32(t1);

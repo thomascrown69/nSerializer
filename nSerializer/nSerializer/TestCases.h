@@ -26,6 +26,9 @@ class TestCases
     public:
     TestCases();
     
+    void testReadAllFloatingPointsValues();
+    void testWriteAllFloatingPointsValues();
+    
     void testReadAllIntValues();
     void testWriteAllIntValues();
     

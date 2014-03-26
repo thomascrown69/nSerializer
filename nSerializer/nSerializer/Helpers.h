@@ -21,6 +21,7 @@ class Helpers
 {
     
     public:
+        static bool isEqual(double x, double y);
         static long bytesOfLong(long input);
         static double round(double r);
         static double floor_to_zero(double f);

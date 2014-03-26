@@ -93,6 +93,21 @@ long BaseSerializedObj::getSize()
     return max;
 }
 
+uint16_t BaseSerializedObj::readUInt16()
+{
+    uint16_t r =
+    (readByte() & 0xFF) |
+    (readByte() & 0xFF) << 8;
+    return r;
+}
+
+int16_t BaseSerializedObj::readInt16()
+{
+    int16_t r =
+    (readByte() & 0xFF) |
+    (readByte() & 0xFF) << 8;
+    return r;
+}
 
 uint32_t BaseSerializedObj::readUInt32()
 {
@@ -165,8 +180,11 @@ float BaseSerializedObj::readFloat()
 
 double BaseSerializedObj::readDouble()
 {
-    unsigned char* a = (unsigned char* ) readUInt64();
-    return *(float *) &a;
+    int floor = readInt32();
+    float frac = readFloat();
+    double n = floor + frac;
+    return n;
+    //std::cout << "\n\n " << " floor " << floor << " frac " << frac << " n " << n << " \n";
 }
 
 
@@ -183,6 +201,21 @@ std::string BaseSerializedObj::readString()
     return r;
 }
 
+void BaseSerializedObj::writeUInt16(uint16_t input)
+{
+    resizeBufferNeeded( byteSize_writeUInt16 );
+    unsigned char * p = (unsigned char *) &input;
+    writeByte(p[0]);
+    writeByte(p[1]);
+}
+
+void BaseSerializedObj::writeInt16(int16_t input)
+{
+    resizeBufferNeeded( byteSize_writeInt16 );
+    unsigned char * p = (unsigned char *) &input;
+    writeByte(p[0]);
+    writeByte(p[1]);
+}
 
 void BaseSerializedObj::writeUInt32(uint32_t input)
 {
@@ -248,22 +281,14 @@ void BaseSerializedObj::writeFloat(float input)
 }
 
 
+//my custom double packing
 //double precision floating-point | IEEE 754
 void BaseSerializedObj::writeDouble(double input)
 {
-    resizeBufferNeeded(byteSize_writeDouble);
-    
-    unsigned char * p = (unsigned char *) &input;
-    writeByte(p[0]);
-    writeByte(p[1]);
-    writeByte(p[2]);
-    writeByte(p[3]);
-    writeByte(p[4]);
-    writeByte(p[5]);
-    writeByte(p[6]);
-    writeByte(p[7]);
-    
-    
+    int floor = Helpers::floor_to_zero(input);
+    double frac = input - floor;
+    writeInt32(floor);
+    writeFloat(frac);
 }
 
 
