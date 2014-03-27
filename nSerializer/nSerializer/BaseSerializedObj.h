@@ -56,13 +56,6 @@ class BaseSerializedObj
     
         void resizeBufferNeeded(long _size);
     
-    
-        union d2b
-        {
-            double value;
-            char bytes[sizeof (double)]; // avoid magic numbers
-        };
-    
     public:
         BaseSerializedObj(long defaultBufferSize);
         BaseSerializedObj(long defaultBufferSize, char* bytearray);
@@ -86,6 +79,25 @@ class BaseSerializedObj
         void writeFloat(float input);
         void writeString(std::string input);
     
+        //template<typename T>
+        void writeUInt16Array(uint16_t array[], uint64_t s);
+        void writeInt16Array(int16_t array[], uint64_t s);
+    
+        void writeUInt32Array(uint32_t array[], uint64_t s);
+        void writeInt32Array(int32_t array[], uint64_t s);
+
+        void writeUInt64Array(uint64_t array[], uint64_t s);
+        void writeInt64Array(int64_t array[], uint64_t s);
+
+        void readUInt16Array(uint16_t** o);
+        void readInt16Array(int16_t** o);
+
+        void readUInt32Array(uint32_t** o);
+        void readInt32Array(int32_t** o);
+    
+        void readUInt64Array(uint64_t** o);
+        void readInt64Array(int64_t** o);
+    
         uint16_t readUInt16();
         uint32_t readUInt32();
         uint64_t readUInt64();
@@ -94,7 +106,7 @@ class BaseSerializedObj
         int32_t readInt32();
         int64_t readInt64();
     
-        void readChars(char** p);
+        void readChars(char** o);
         double readDouble();
         float readFloat();
         std::string readString();

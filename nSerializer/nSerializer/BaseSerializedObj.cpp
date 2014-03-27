@@ -32,8 +32,6 @@ BaseSerializedObj::~BaseSerializedObj()
     free(buffer);
 }
 
-
-
 void BaseSerializedObj::resizeBufferNeeded(long _size)
 {
     long dif2 = labs(current + _size);
@@ -184,7 +182,6 @@ double BaseSerializedObj::readDouble()
     float frac = readFloat();
     double n = floor + frac;
     return n;
-    //std::cout << "\n\n " << " floor " << floor << " frac " << frac << " n " << n << " \n";
 }
 
 
@@ -199,6 +196,78 @@ std::string BaseSerializedObj::readString()
         i++;
     }
     return r;
+}
+
+void BaseSerializedObj::readUInt16Array(uint16_t** o)
+{
+    uint64_t size = readUInt64();
+    *o = (uint16_t *) malloc(size);
+    uint64_t i = 0;
+    while(i != size)
+    {
+        (*o)[i] = readUInt16();
+        i++;
+    }
+}
+
+void BaseSerializedObj::readInt16Array(int16_t** o)
+{
+    uint64_t size = readUInt64();
+    *o = (int16_t *) malloc(size);
+    uint64_t i = 0;
+    while(i != size)
+    {
+        (*o)[i] = readInt16();
+        i++;
+    }
+}
+
+void BaseSerializedObj::readUInt32Array(uint32_t** o)
+{
+    uint64_t size = readUInt64();
+    *o = (uint32_t *) malloc(size);
+    uint64_t i = 0;
+    while(i != size)
+    {
+        (*o)[i] = readUInt32();
+        i++;
+    }
+}
+
+void BaseSerializedObj::readInt32Array(int32_t** o)
+{
+    uint64_t size = readUInt64();
+    *o = (int32_t *) malloc(size);
+    uint64_t i = 0;
+    while(i != size)
+    {
+        (*o)[i] = readInt32();
+        i++;
+    }
+}
+
+void BaseSerializedObj::readUInt64Array(uint64_t** o)
+{
+    uint64_t size = readUInt64();
+    *o = (uint64_t *) malloc(size);
+    uint64_t i = 0;
+    while(i != size)
+    {
+        (*o)[i] = readUInt64();
+        i++;
+    }
+}
+
+void BaseSerializedObj::readInt64Array(int64_t** o)
+{
+    uint64_t size = readUInt64();
+    *o = (int64_t *) malloc(size);
+    uint64_t i = 0;
+    while(i != size)
+    {
+        (*o)[i] = readInt64();
+        i++;
+    }
 }
 
 void BaseSerializedObj::writeUInt16(uint16_t input)
@@ -237,8 +306,6 @@ void BaseSerializedObj::writeInt32(int32_t input)
     writeByte(p[3]);
 }
 
-
-
 void BaseSerializedObj::writeInt64(int64_t input)
 {
     resizeBufferNeeded( byteSize_writeUInt64 );
@@ -252,8 +319,6 @@ void BaseSerializedObj::writeInt64(int64_t input)
     writeByte(p[6]);
     writeByte(p[7]);
 }
-
-
 
 void BaseSerializedObj::writeUInt64(uint64_t input)
 {
@@ -280,9 +345,8 @@ void BaseSerializedObj::writeFloat(float input)
     writeByte(p[3]);
 }
 
-
 //my custom double packing
-//double precision floating-point | IEEE 754
+//double precision floating-point, doesn't use the IEEE 754 format
 void BaseSerializedObj::writeDouble(double input)
 {
     int floor = Helpers::floor_to_zero(input);
@@ -290,7 +354,6 @@ void BaseSerializedObj::writeDouble(double input)
     writeInt32(floor);
     writeFloat(frac);
 }
-
 
 //only supports char arrays of length value of 4 bytes
 void BaseSerializedObj::writeChars(char* input)
@@ -317,5 +380,71 @@ void BaseSerializedObj::writeString(std::string input)
     {
         writeByte(input[y]);
         y++;
+    }
+}
+
+void BaseSerializedObj::writeInt16Array(int16_t array[], uint64_t s)
+{
+    writeUInt64(s);
+    uint64_t i = 0;
+    while ( i!=s )
+    {
+        writeInt16(array[i]);
+        i++;
+    }
+}
+
+void BaseSerializedObj::writeUInt16Array(uint16_t array[], uint64_t s)
+{
+    writeUInt64(s);
+    uint64_t i = 0;
+    while ( i!=s )
+    {
+        writeUInt16(array[i]);
+        i++;
+    }
+}
+
+void BaseSerializedObj::writeInt32Array(int32_t array[], uint64_t s)
+{
+    writeUInt64(s);
+    uint64_t i = 0;
+    while ( i!=s )
+    {
+        writeInt32(array[i]);
+        i++;
+    }
+}
+
+void BaseSerializedObj::writeUInt32Array(uint32_t array[], uint64_t s)
+{
+    writeUInt64(s);
+    uint64_t i = 0;
+    while ( i!=s )
+    {
+        writeUInt32(array[i]);
+        i++;
+    }
+}
+
+void BaseSerializedObj::writeInt64Array(int64_t array[], uint64_t s)
+{
+    writeUInt64(s);
+    uint64_t i = 0;
+    while ( i!=s )
+    {
+        writeInt64(array[i]);
+        i++;
+    }
+}
+
+void BaseSerializedObj::writeUInt64Array(uint64_t array[], uint64_t s)
+{
+    writeUInt64(s);
+    uint64_t i = 0;
+    while ( i!=s )
+    {
+        writeUInt64(array[i]);
+        i++;
     }
 }

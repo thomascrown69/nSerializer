@@ -72,6 +72,12 @@ double t31 = -0.3413;
 
 ////////////////////////////
 
+//arrays
+uint64_t t32Size = 4;
+uint32_t* t32;
+
+////////////////////////////
+
 Benchmarker* bench;
 
 TestCases::TestCases()
@@ -110,6 +116,81 @@ TestCases::TestCases()
         t23.push_back('A');
         i++;
     }
+    
+    t32 = (uint32_t*) malloc(t32Size);
+    t32[0] = 35;
+    t32[1] = 4356;
+    t32[2] = 4353;
+    t32[3] = 43;
+    
+    
+}
+
+
+void TestCases::testWriteAllArraysValues()
+{
+    std::cout << "\n-----------------------------\n";
+    std::cout << "TESTING WRITE ALL ARRAY VALUES";
+    BaseSerializedObj* obj = new BaseSerializedObj(32);
+    bench->start();
+    
+    
+    obj->writeUInt32Array(t32, 4);
+    
+    
+    bench->stop();
+    std::cout << "\n WRITE time taken : ";
+    bench->getAll();
+    std::ofstream output_file("data.tx", std::ios::binary);
+    output_file.write(obj->getBytes(), obj->getSize());
+    output_file.close();
+    obj->~BaseSerializedObj();
+    std::cout << "\n\n";
+}
+
+void TestCases::testReadAllArraysValues()
+{
+    std::cout << "\n-----------------------------\n";
+    std::cout << "TESTING READ ALL ARRAY VALUES";
+    std::ifstream input_file("data.tx", std::ios::binary);
+    input_file.seekg (0, input_file.end);
+    long length = input_file.tellg();
+    input_file.seekg (0, input_file.beg);
+    char* pInputFile = (char*) malloc( length );
+    input_file.read(pInputFile, length);
+    BaseSerializedObj* obj = new BaseSerializedObj(length, pInputFile);
+    bench->start();
+    
+    uint32_t* _t32;
+    obj->readUInt32Array(&_t32);
+    
+    
+    bench->stop();
+    std::cout << "\n\n\n READ time taken : ";
+    bench->getAll();
+    free(pInputFile);
+    input_file.close();
+    obj->~BaseSerializedObj();
+    
+    std::cout << "\n";
+    
+    int i = 0;
+    
+    int faultsT32 = 0;
+    while( i != t32Size )
+    {
+        if( _t32[i] != t32[i] )
+        {
+            std::cout << " \nError: t32[" << i << "] != _t32[" << i << "] ( " << t32[i] << " != " << _t32[i] << " ) ";
+            faultsT32++;
+        }
+        i++;
+    }
+    if(faultsT32 == 0)
+    {
+        std::cout << "\nSuccess t32 == _t32\n";
+    }
+    
     
 }
 
@@ -152,7 +233,6 @@ void TestCases::testReadAllFloatingPointsValues()
     input_file.seekg (0, input_file.beg);
     char* pInputFile = (char*) malloc( length );
     input_file.read(pInputFile, length);
-    
     BaseSerializedObj* obj = new BaseSerializedObj(length, pInputFile);
     bench->start();
     
@@ -167,24 +247,22 @@ void TestCases::testReadAllFloatingPointsValues()
     double _t31 = obj->readDouble();
     
     if(_t24 != t24)
-    { std::cout << " \nError: t24 != _t24 ( " << t24 << " != " << t24 << " ) "; } else { std::cout << " \nSuccess: t24 == _t24 ( " << t24 << " == " << _t24 << " ) "; }
+    { std::cout << " \nError: t24 != _t24 ( " << t24 << " != " << _t24 << " ) "; } else { std::cout << " \nSuccess: t24 == _t24 ( " << t24 << " == " << _t24 << " ) "; }
 
     if(_t25 != t25)
-    { std::cout << " \nError: t25 != _t25 ( " << t25 << " != " << t25 << " ) "; } else { std::cout << " \nSuccess: t25 == _t25 ( " << t25 << " == " << _t25 << " ) "; }
+    { std::cout << " \nError: t25 != _t25 ( " << t25 << " != " << _t25 << " ) "; } else { std::cout << " \nSuccess: t25 == _t25 ( " << t25 << " == " << _t25 << " ) "; }
 
     if(_t26 != t26)
-    { std::cout << " \nError: t26 != _t26 ( " << t26 << " != " << t26 << " ) "; } else { std::cout << " \nSuccess: t26 == _t26 ( " << t26 << " == " << _t26 << " ) "; }
+    { std::cout << " \nError: t26 != _t26 ( " << t26 << " != " << _t26 << " ) "; } else { std::cout << " \nSuccess: t26 == _t26 ( " << t26 << " == " << _t26 << " ) "; }
 
     if(_t27 != t27)
-    { std::cout << " \nError: t27 != _t27 ( " << t27 << " != " << t27 << " ) "; } else { std::cout << " \nSuccess: t27 == _t27 ( " << t27 << " == " << _t27 << " ) "; }
+    { std::cout << " \nError: t27 != _t27 ( " << t27 << " != " << _t27 << " ) "; } else { std::cout << " \nSuccess: t27 == _t27 ( " << t27 << " == " << _t27 << " ) "; }
 
-    
     std::cout << "\n\nDoubles wont be compared automatically due to precision, check them manually.\n";
     std::cout << "\nt28: " << t28 << " t28: " << _t28;
     std::cout << "\nt29: " << t29 << " t29: " << _t29;
     std::cout << "\nt30: " << t30 << " t30: " << _t30;
     std::cout << "\nt31: " << t31 << " t31: " << _t31;
-    
     
     bench->stop();
     std::cout << "\n\n\n READ time taken : ";

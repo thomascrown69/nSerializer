@@ -37,4 +37,8 @@ class TestCases
     
     void testWriteAllStringsValues();
     void testReadAllStringsValues();
+    
+    void testWriteAllArraysValues();
+    void testReadAllArraysValues();
+    
 };
