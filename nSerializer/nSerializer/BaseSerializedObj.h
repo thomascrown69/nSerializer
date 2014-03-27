@@ -79,7 +79,6 @@ class BaseSerializedObj
         void writeFloat(float input);
         void writeString(std::string input);
     
-        //template<typename T>
         void writeUInt16Array(uint16_t array[], uint64_t s);
         void writeInt16Array(int16_t array[], uint64_t s);
     
@@ -98,6 +97,12 @@ class BaseSerializedObj
         void readUInt64Array(uint64_t** o);
         void readInt64Array(int64_t** o);
     
+        void writeFloatArray(float array[], uint64_t);
+        void writeDoubleArray(double array[], uint64_t);
+    
+        void readFloatArray(float** o);
+        void readDoubleArray(double** o);
+
         uint16_t readUInt16();
         uint32_t readUInt32();
         uint64_t readUInt64();

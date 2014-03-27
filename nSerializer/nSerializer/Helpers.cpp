@@ -20,12 +20,6 @@ long Helpers::bytesOfLong(long input)
     return n;
 }
 
-//Knuth section 4.2.2
-bool Helpers::isEqual(double x, double y)
-{
-    const double epsilon = 1e-5;
-    return std::abs(x - y) <= epsilon * std::abs(x);
-}
 
 double Helpers::round(double value) {
     return (value > 0.0) ? std::floor(value + 0.5) : std::ceil(value - 0.5);

@@ -76,12 +76,26 @@ double t31 = -0.3413;
 uint64_t t32Size = 4;
 uint32_t* t32;
 
+uint64_t t33Size = 4;
+int64_t* t33;
+
+uint64_t t34Size = 4;
+float* t34;
+
+uint64_t t35Size = 6;
+double* t35;
+
 ////////////////////////////
 
 Benchmarker* bench;
 
 TestCases::TestCases()
 {
+    typedef std::numeric_limits< double > dbl;
+    std::cout.precision(dbl::digits10);
+    
+    ////////////////////////////
+    
     bench = new Benchmarker();
     
     t18 = (char*) malloc(6);
@@ -117,13 +131,31 @@ TestCases::TestCases()
         i++;
     }
     
-    t32 = (uint32_t*) malloc(t32Size);
+    t32 = (uint32_t*) malloc(t32Size*4);
     t32[0] = 35;
     t32[1] = 4356;
     t32[2] = 4353;
     t32[3] = 43;
     
+    t33 = (int64_t*) malloc(t33Size*8);
+    t33[0] = -35;
+    t33[1] = 4356;
+    t33[2] = -1531323;
+    t33[3] = 934119;
+
+    t34 = (float*) malloc(t34Size*4);
+    t34[0] = -4353.12323f;
+    t34[1] = 0.4353f;
+    t34[2] = 343151.9f;
+    t34[3] = -0.32319f;
     
+    t35 = (double*) malloc(t35Size*8);
+    t35[0] = -4353.12434323;
+    t35[1] = 0.443353;
+    t35[2] = 343151.9413413;
+    t35[3] = -0.3231913143;
+    t35[4] = 0.3143;
+    t35[5] = -0.3;
 }
 
 
@@ -134,9 +166,10 @@ void TestCases::testWriteAllArraysValues()
     BaseSerializedObj* obj = new BaseSerializedObj(32);
     bench->start();
     
-    
-    obj->writeUInt32Array(t32, 4);
-    
+    obj->writeUInt32Array(t32, t32Size);
+    obj->writeInt64Array(t33, t33Size);
+    obj->writeFloatArray(t34, t34Size);
+    obj->writeDoubleArray(t35, t35Size);
     
     bench->stop();
     std::cout << "\n WRITE time taken : ";
@@ -163,7 +196,13 @@ void TestCases::testReadAllArraysValues()
     
     uint32_t* _t32;
     obj->readUInt32Array(&_t32);
-    
+    int64_t* _t33;
+    obj->readInt64Array(&_t33);
+
+    float* _t34;
+    obj->readFloatArray(&_t34);
+    double* _t35;
+    obj->readDoubleArray(&_t35);
     
     bench->stop();
     std::cout << "\n\n\n READ time taken : ";
@@ -188,9 +227,63 @@ void TestCases::testReadAllArraysValues()
     }
     if(faultsT32 == 0)
     {
-        std::cout << "\nSuccess t32 == _t32\n";
+        std::cout << "\nSuccess t32 == _t32";
     }
     
+    i = 0 ;
+    int faultsT33 = 0;
+    while( i != t33Size )
+    {
+        if( _t33[i] != t33[i] )
+        {
+            std::cout << " \nError: t33[" << i << "] != _t33[" << i << "] ( " << t33[i] << " != " << _t33[i] << " ) ";
+            faultsT33++;
+        }
+        i++;
+    }
+    if(faultsT33 == 0)
+    {
+        std::cout << "\nSuccess t33 == _t33";
+    }
+
+    
+    i = 0 ;
+    int faultsT34 = 0;
+    while( i != t34Size )
+    {
+        if( _t34[i] != t34[i] )
+        {
+            std::cout << " \nError: t34[" << i << "] != _t34[" << i << "] ( " << t34[i] << " != " << _t34[i] << " ) ";
+            faultsT34++;
+        }
+        i++;
+    }
+    if(faultsT34 == 0)
+    {
+        std::cout << "\nSuccess t34 == _t34";
+    }
+    
+    i = 0 ;
+    int faultsT35 = 0;
+    while( i != t35Size )
+    {
+        if( _t35[i] != t35[i] )
+        {
+            std::cout << " \nError: t35[" << i << "] != _t35[" << i << "] ( " << t35[i] << " != " << _t35[i] << " ) \n";
+            faultsT35++;
+        }
+        i++;
+    }
+    if(faultsT35 == 0)
+    {
+        std::cout << "\nSuccess t35 == _t35";
+    }
+    
+    
+    free(_t32);
+    free(_t33);
+    free(_t34);
+    free(_t35);
     
 }
 
@@ -247,22 +340,29 @@ void TestCases::testReadAllFloatingPointsValues()
     double _t31 = obj->readDouble();
     
     if(_t24 != t24)
-    { std::cout << " \nError: t24 != _t24 ( " << t24 << " != " << _t24 << " ) "; } else { std::cout << " \nSuccess: t24 == _t24 ( " << t24 << " == " << _t24 << " ) "; }
+    { std::cout << " \nFloat Error: t24 != _t24 ( " << t24 << " != " << _t24 << " ) "; } else { std::cout << " \nFloat Success: t24 == _t24 ( " << t24 << " == " << _t24 << " ) "; }
 
     if(_t25 != t25)
-    { std::cout << " \nError: t25 != _t25 ( " << t25 << " != " << _t25 << " ) "; } else { std::cout << " \nSuccess: t25 == _t25 ( " << t25 << " == " << _t25 << " ) "; }
+    { std::cout << " \nFloat Error: t25 != _t25 ( " << t25 << " != " << _t25 << " ) "; } else { std::cout << " \nFloat Success: t25 == _t25 ( " << t25 << " == " << _t25 << " ) "; }
 
     if(_t26 != t26)
-    { std::cout << " \nError: t26 != _t26 ( " << t26 << " != " << _t26 << " ) "; } else { std::cout << " \nSuccess: t26 == _t26 ( " << t26 << " == " << _t26 << " ) "; }
+    { std::cout << " \nFloat Error: t26 != _t26 ( " << t26 << " != " << _t26 << " ) "; } else { std::cout << " \nFloat Success: t26 == _t26 ( " << t26 << " == " << _t26 << " ) "; }
 
     if(_t27 != t27)
-    { std::cout << " \nError: t27 != _t27 ( " << t27 << " != " << _t27 << " ) "; } else { std::cout << " \nSuccess: t27 == _t27 ( " << t27 << " == " << _t27 << " ) "; }
+    { std::cout << " \nFloat Error: t27 != _t27 ( " << t27 << " != " << _t27 << " ) "; } else { std::cout << " \nFloat Success: t27 == _t27 ( " << t27 << " == " << _t27 << " ) "; }
 
-    std::cout << "\n\nDoubles wont be compared automatically due to precision, check them manually.\n";
-    std::cout << "\nt28: " << t28 << " t28: " << _t28;
-    std::cout << "\nt29: " << t29 << " t29: " << _t29;
-    std::cout << "\nt30: " << t30 << " t30: " << _t30;
-    std::cout << "\nt31: " << t31 << " t31: " << _t31;
+    
+    if(_t28 != t28)
+    { std::cout << " \nDouble Error: t28 != _t28 ( " << t28 << " != " << _t28 << " ) "; } else { std::cout << " \nDouble Success: t28 == _t28 ( " << t28 << " == " << _t28 << " ) "; }
+    
+    if(_t29 != t29)
+    { std::cout << " \nDouble Error: t29 != _t29 ( " << t29 << " != " << _t29 << " ) "; } else { std::cout << " \nDouble Success: t29 == _t29 ( " << t29 << " == " << _t29 << " ) "; }
+    
+    if(_t30 != t30)
+    { std::cout << " \nDouble Error: t30 != _t30 ( " << t30 << " != " << _t30 << " ) "; } else { std::cout << " \nDouble Success: t30 == _t30 ( " << t30 << " == " << _t30 << " ) "; }
+    
+    if(_t31 != t31)
+    { std::cout << " \nDouble Error: t31 != _t31 ( " << t31 << " != " << _t31 << " ) "; } else { std::cout << " \nDouble Success: t31 == _t31 ( " << t31 << " == " << _t31 << " ) "; }
     
     bench->stop();
     std::cout << "\n\n\n READ time taken : ";
